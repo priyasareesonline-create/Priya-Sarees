@@ -60,7 +60,7 @@ export function buildOrderDispatchPlainText(
   return [
     `Hi ${greeting},`,
     "",
-    `Good news — your THRY order has been dispatched.`,
+    `Good news — your Priya Sarees order has been dispatched.`,
     "",
     `Order #${input.orderId}`,
     `Dispatched: ${formatOrderDateTimeIst(input.dispatchedAt)}`,
@@ -154,7 +154,7 @@ export function buildOrderDispatchHtml(input: OrderDispatchEmailInput): string {
   `;
 
   return buildEmailLayoutHtml({
-    preheader: `Your THRY order #${input.orderId} has been dispatched.`,
+    preheader: `Your Priya Sarees order #${input.orderId} has been dispatched.`,
     bodyHtml,
   });
 }

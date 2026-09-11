@@ -1,5 +1,5 @@
 /**
- * THRY shop hostname on Cloudflare → Vercel origin.
+ * Priya Sarees shop hostname on Cloudflare → Vercel origin.
  *
  * Production edge cache (industry-safe):
  * - Cache public catalog HTML + public storefront APIs (short TTL)
@@ -7,11 +7,9 @@
  * - Bypass when Supabase auth cookies or Authorization are present
  * - Never store responses that Set-Cookie
  *
- * X-THRY-Cache: HIT | MISS | BYPASS
+ * X-Priya-Cache: HIT | MISS | BYPASS
  */
-const ORIGIN = "https://thry-thryco.vercel.app";
-const APEX = "thryco.com";
-const WWW = "www.thryco.com";
+const ORIGIN = "https://priya-sarees.vercel.app";
 
 /** Fallback TTL when origin omits s-maxage (seconds). */
 const DEFAULT_HTML_S_MAXAGE = 120;
@@ -81,12 +79,11 @@ function rewriteLocation(value: string, incomingHost: string): string {
   try {
     const url = new URL(value, `https://${incomingHost}`);
     if (
-      url.hostname === "thry-thryco.vercel.app" ||
-      url.hostname === "thry-self.vercel.app" ||
+      url.hostname === "priya-sarees.vercel.app" ||
       url.hostname.endsWith(".vercel.app")
     ) {
       url.protocol = "https:";
-      url.hostname = incomingHost === WWW ? APEX : incomingHost;
+      url.hostname = incomingHost;
     }
     return url.toString();
   } catch {
@@ -149,11 +146,9 @@ function isCacheableGet(request: Request, url: URL): boolean {
   return isPublicHtmlPath(url.pathname) || isPublicStorefrontApi(url.pathname);
 }
 
-/** Stable cache key: apex host; size-config productIds sorted. */
+/** Stable cache key: request host; size-config productIds sorted. */
 function normalizeCacheKeyUrl(requestUrl: URL): URL {
   const cacheUrl = new URL(requestUrl.toString());
-  cacheUrl.hostname = APEX;
-  cacheUrl.protocol = "https:";
   cacheUrl.hash = "";
   cacheUrl.port = "";
 
@@ -228,7 +223,7 @@ function resolveEdgeTtl(pathname: string, cacheControl: string | null): number {
 
 function withCacheHeader(response: Response, value: string): Response {
   const headers = new Headers(response.headers);
-  headers.set("X-THRY-Cache", value);
+  headers.set("X-Priya-Cache", value);
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -243,7 +238,7 @@ async function fetchOrigin(
 ): Promise<Response> {
   const outbound = new URL(incoming.pathname + incoming.search, ORIGIN);
   const headers = copyHeaders(request.headers, {
-    "X-Forwarded-Host": APEX,
+    "X-Forwarded-Host": host,
     "X-Forwarded-Proto": "https",
   });
   headers.delete("accept-encoding");
@@ -319,7 +314,7 @@ async function handleCachedGet(
     "Cache-Control",
     `public, s-maxage=${sMaxAge}, stale-while-revalidate=${sMaxAge * 2}`,
   );
-  storeHeaders.set("X-THRY-Cache", "MISS");
+  storeHeaders.set("X-Priya-Cache", "MISS");
 
   const toStore = new Response(bodyText, {
     status: upstream.status,
@@ -337,12 +332,6 @@ export default {
     const host = incoming.hostname.toLowerCase();
 
     if (incoming.protocol === "http:") {
-      incoming.protocol = "https:";
-      return Response.redirect(incoming.toString(), 308);
-    }
-
-    if (host === WWW) {
-      incoming.hostname = APEX;
       incoming.protocol = "https:";
       return Response.redirect(incoming.toString(), 308);
     }

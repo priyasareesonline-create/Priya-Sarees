@@ -31,8 +31,8 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 /**
- * Short-lived client upload token for the THRY R2 media proxy.
- * Client PUTs bytes to thry-media; Vercel never sees the image body.
+ * Short-lived client upload token for the Priya Sarees R2 media proxy.
+ * Client PUTs bytes to priya-sarees-media; Vercel never sees the image body.
  */
 export function createMediaProxyUploadToken(
   storagePath: string,

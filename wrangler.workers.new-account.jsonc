@@ -1,8 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // THRY — thrycoproduct@gmail.com account
-  "name": "thry",
-  "account_id": "77dfa9b757691b2321fe0630f01c8c6a",
+  // Priya Sarees — Cloudflare account 17ae91583f8b6b109dbdc636bdf1511e
+  "name": "priya-sarees",
+  "account_id": "17ae91583f8b6b109dbdc636bdf1511e",
   "main": ".open-next/worker.js",
   "minify": true,
   "compatibility_date": "2025-05-05",
@@ -15,17 +15,17 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "thry"
+      "service": "priya-sarees"
     }
   ],
   "r2_buckets": [
     {
       "binding": "MEDIA_BUCKET",
-      "bucket_name": "thry-cdn"
+      "bucket_name": "priya-sarees-cdn"
     },
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "thry-next-cache"
+      "bucket_name": "priya-sarees-next-cache"
     }
   ],
   "durable_objects": {

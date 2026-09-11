@@ -7,11 +7,11 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "http://localhost:3000").replace(/\/$/, "");
 const PDP = "/shop/baby-shivan-idol";
 const ADDRESS = {
   fullName: "Playwright Test Buyer",
-  email: "playwright-test@thryco.com",
+  email: "playwright-test@localhost:3000",
   mobile: "9123456789",
   pin: "600001",
   line1: "12 Test Street, Near Temple",

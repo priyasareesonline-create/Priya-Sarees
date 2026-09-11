@@ -37,16 +37,16 @@ const HomeTestimonialsCarousel = dynamic(() =>
 export const revalidate = 120;
 
 export const metadata: Metadata = {
-  title: "Creative 3D printed products",
+  title: "Silk, cotton & wedding sarees",
   description:
-    "Shop creative 3D printed products at THRY — art & craft tools, customised gifts, statues, planters and more.",
+    "Shop silk, cotton, wedding and festive sarees at Priya Sarees — secure checkout and delivery across India.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "THRY | Creative 3D printed products",
+    title: "Priya Sarees | Silk, cotton & wedding sarees",
     description:
-      "Shop creative 3D printed products at THRY — art & craft tools, gifts, statues and home essentials.",
+      "Shop silk, cotton, wedding and festive sarees at Priya Sarees.",
     url: "/",
   },
 };

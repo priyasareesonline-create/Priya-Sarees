@@ -1,5 +1,5 @@
 -- =============================================================================
--- Sakthi Textiles – HiyoRi database setup
+-- Priya Sarees – HiyoRi database setup
 -- Run in Supabase Dashboard → SQL Editor → New query → Run
 -- Project: qhtwwyqlsnckorndmhmt
 -- =============================================================================

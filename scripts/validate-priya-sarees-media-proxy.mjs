@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Live checks for THRY media worker: health, CORS, server PUT, client token PUT.
+ * Live checks for Priya Sarees media worker: health, CORS, server PUT, client token PUT.
  * Loads secrets from .env.local — never prints them.
  */
 import path from "node:path";
@@ -34,8 +34,8 @@ if (expectedBase && base !== expectedBase) {
   fail(`proxy URL ${base} ≠ identity ${expectedBase}`);
 }
 if (!secret || secret.length < 16) fail("R2_MEDIA_PROXY_SECRET missing or too short");
-if (identity.cloudflare.r2.mediaBucket !== "thry-cdn") {
-  fail("identity media bucket is not thry-cdn");
+if (identity.cloudflare.r2.mediaBucket !== "priya-sarees-cdn") {
+  fail("identity media bucket is not priya-sarees-cdn");
 }
 
 function signToken(storagePath, ttlSeconds = 300) {
@@ -62,10 +62,10 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-const allowedOrigin = "https://thryco.com";
-const blockedOrigin = "https://hubsofcraftss.com";
-const stagingKey = `uploads/staging/thry-probe-${Date.now()}.txt`;
-const nonStagingKey = `healthcheck/thry-probe-${Date.now()}.txt`;
+const allowedOrigin = "http://localhost:3000";
+const blockedOrigin = "http://localhost:3000";
+const stagingKey = `uploads/staging/priya-sarees-probe-${Date.now()}.txt`;
+const nonStagingKey = `healthcheck/priya-sarees-probe-${Date.now()}.txt`;
 
 await check("GET /health", async () => {
   const res = await fetch(`${base}/health`);
@@ -75,7 +75,7 @@ await check("GET /health", async () => {
   }
 });
 
-await check("CORS allow THRY Vercel origin", async () => {
+await check("CORS allow Priya Sarees Vercel origin", async () => {
   const res = await fetch(`${base}/object?key=${encodeURIComponent(stagingKey)}`, {
     method: "OPTIONS",
     headers: {
@@ -123,7 +123,7 @@ await check("server PUT/GET/DELETE staging object", async () => {
       Authorization: `Bearer ${secret}`,
       "Content-Type": "text/plain",
     },
-    body: "thry-proxy-ok",
+    body: "priya-sarees-proxy-ok",
   });
   if (!put.ok) throw new Error(`PUT ${put.status} ${(await put.text()).slice(0, 120)}`);
 
@@ -132,7 +132,7 @@ await check("server PUT/GET/DELETE staging object", async () => {
     headers: { Authorization: `Bearer ${secret}` },
   });
   const text = await get.text();
-  if (!get.ok || text !== "thry-proxy-ok") {
+  if (!get.ok || text !== "priya-sarees-proxy-ok") {
     throw new Error(`GET ${get.status} ${text.slice(0, 80)}`);
   }
 
@@ -155,7 +155,7 @@ await check("client upload token PUT staging", async () => {
       "Content-Type": "text/plain",
       Origin: allowedOrigin,
     },
-    body: "thry-token-ok",
+    body: "priya-sarees-token-ok",
   });
   if (!put.ok) throw new Error(`token PUT ${put.status} ${(await put.text()).slice(0, 120)}`);
 

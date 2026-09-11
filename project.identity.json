@@ -2,80 +2,77 @@
   "$schema": "./project.identity.schema.json",
   "version": 1,
   "project": {
-    "name": "THRY",
-    "slug": "thry",
-    "repo": "thrycoproduct-ux/thry",
+    "name": "Priya Sarees",
+    "slug": "priya-sarees",
+    "repo": "priyasareesonline-create/Priya-Sarees",
     "branch": "main"
   },
   "site": {
-    "canonicalOrigin": "https://thryco.com",
-    "wwwOrigin": "https://www.thryco.com",
+    "canonicalOrigin": "http://localhost:3000",
+    "wwwOrigin": "http://localhost:3000",
     "localOrigins": [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
-      "https://thryco.com",
-      "https://www.thryco.com",
-      "https://thry.thrycoproduct.workers.dev",
-      "https://thry-thryco.vercel.app",
-      "https://thry-self.vercel.app"
+      "https://priya-sarees.vercel.app"
     ]
   },
   "supabase": {
-    "projectRef": "azqgyxdzwlhdmjvkngbs",
-    "url": "https://azqgyxdzwlhdmjvkngbs.supabase.co",
+    "projectRef": "eouhtccprtggeftqiplm",
+    "url": "https://eouhtccprtggeftqiplm.supabase.co",
     "regionHint": "ap-south-1"
   },
   "cloudflare": {
-    "accountEmail": "thrycoproduct@gmail.com",
-    "accountId": "77dfa9b757691b2321fe0630f01c8c6a",
-    "workerName": "thry",
-    "mediaWorkerName": "thry-media",
+    "accountEmail": "",
+    "accountId": "17ae91583f8b6b109dbdc636bdf1511e",
+    "workerName": "priya-sarees",
+    "mediaWorkerName": "priya-sarees-media",
     "productionWranglerConfig": "wrangler.workers.new-account.jsonc",
     "mediaWranglerConfig": "workers/r2-media-proxy/wrangler.jsonc",
     "r2": {
-      "mediaBucket": "thry-cdn",
-      "nextCacheBucket": "thry-next-cache",
-      "s3Endpoint": "https://77dfa9b757691b2321fe0630f01c8c6a.r2.cloudflarestorage.com",
-      "publicCdnHint": "https://pub-7298c413a12641b5ba5dd9bff2d9009f.r2.dev",
-      "mediaProxyUrl": "https://media.thryco.com"
+      "mediaBucket": "priya-sarees-cdn",
+      "nextCacheBucket": "priya-sarees-next-cache",
+      "s3Endpoint": "https://17ae91583f8b6b109dbdc636bdf1511e.r2.cloudflarestorage.com"
     }
   },
   "vercel": {
-    "teamSlug": "thryco",
-    "teamId": "team_DAup0iV9bvGvaL1mIGH9a7al",
-    "projectSlug": "thry",
-    "projectId": "prj_48M3Nk6JuE9KInZf1t51ww1V6K78",
-    "productionHost": "thryco.com"
+    "teamSlug": "priya-sarees",
+    "projectSlug": "priya-sarees",
+    "productionHost": "localhost:3000"
   },
   "github": {
-    "owner": "thrycoproduct-ux",
-    "repo": "thry",
-    "pushAccount": "thrycoproduct-ux"
+    "owner": "priyasareesonline-create",
+    "repo": "Priya-Sarees",
+    "pushAccount": "priyasareesonline-create"
   },
   "authRedirectOrigins": [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://thryco.com",
-    "https://www.thryco.com",
-    "https://thry.thrycoproduct.workers.dev",
-    "https://thry-thryco.vercel.app",
-    "https://thry-self.vercel.app"
+    "https://priya-sarees.vercel.app"
   ],
   "forbidden": {
-    "description": "Never use these for THRY deploys, R2, env, or wrangler login.",
+    "description": "Never use these for Priya Sarees deploys, R2, env, or wrangler login.",
     "cloudflareAccountEmails": [
+      "thrycoproduct@gmail.com",
       "shaarunew01@gmail.com",
       "sripalanitextilesonline@gmail.com"
     ],
     "cloudflareAccountIds": [
+      "77dfa9b757691b2321fe0630f01c8c6a",
       "542992b23690c0c07bb23e5fecffa6ec"
     ],
     "supabaseProjectRefs": [
+      "azqgyxdzwlhdmjvkngbs",
       "xytdexahcdyhykvuwpys",
       "rzwbpjjayarptlwjfpzm",
       "qhtwwyqlsnckorndmhmt"
     ],
     "siteHosts": [
+      "thryco.com",
+      "www.thryco.com",
+      "media.thryco.com",
+      "thry-thryco.vercel.app",
+      "thry-self.vercel.app",
+      "thry.thrycoproduct.workers.dev",
       "hubsofcraftss.com",
       "www.hubsofcraftss.com",
       "hubofcraftss.com",
@@ -86,15 +83,17 @@
       "hubs-of-craftss-project.vercel.app"
     ],
     "r2Buckets": [
+      "thry-cdn",
+      "thry-next-cache",
       "hubofcraftss-cdn",
       "hubofcraftss-next-cache"
     ]
   },
   "notes": [
-    "THRY is a NEW shop. Secrets stay in .env.local — never commit them.",
-    "Cloudflare account: thrycoproduct@gmail.com / 77dfa9b757691b2321fe0630f01c8c6a",
-    "Supabase project azqgyxdzwlhdmjvkngbs is the only allowed DB/auth project.",
-    "Run npm run validate:identity before auth, R2, wrangler, or deploy work.",
-    "Shop DNS: thryco.com / www are Cloudflare Worker custom domains on thry-shop-edge → Vercel origin (thry-thryco.vercel.app). Media is media.thryco.com (thry-media). Zone may stay Free; Workers Paid (standard) is required for shop-edge traffic."
+    "Priya Sarees is a NEW shop. Secrets stay in .env.local — never commit them.",
+    "Cloudflare account id 17ae91583f8b6b109dbdc636bdf1511e is the only allowed R2/Workers account.",
+    "Supabase project eouhtccprtggeftqiplm is the only allowed DB/auth project.",
+    "Production custom domain is not set yet — canonical origin is localhost until NEXT_PUBLIC_SITE_URL is provided.",
+    "Run npm run validate:identity before auth, R2, wrangler, or deploy work."
   ]
 }

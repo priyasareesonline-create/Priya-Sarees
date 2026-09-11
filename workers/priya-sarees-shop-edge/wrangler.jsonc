@@ -1,22 +1,10 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "name": "priya-sarees-media",
+  "name": "priya-sarees-shop-edge",
   "account_id": "17ae91583f8b6b109dbdc636bdf1511e",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-14",
   "workers_dev": true,
-  "images": {
-    "binding": "IMAGES"
-  },
-  "r2_buckets": [
-    {
-      "binding": "MEDIA_BUCKET",
-      "bucket_name": "priya-sarees-cdn"
-    }
-  ],
-  "secrets": {
-    "required": ["MEDIA_PROXY_SECRET"]
-  },
   "observability": {
     "enabled": true
   }

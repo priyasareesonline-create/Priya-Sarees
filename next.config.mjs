@@ -80,11 +80,16 @@ const nextConfig = {
             },
           ]
         : []),
-      {
-        protocol: "https",
-        hostname: "media.thryco.com",
-        pathname: "/**",
-      },
+      ...(process.env.NEXT_PUBLIC_MEDIA_CDN_ORIGIN
+        ? [
+            {
+              protocol: "https",
+              hostname: new URL(process.env.NEXT_PUBLIC_MEDIA_CDN_ORIGIN)
+                .hostname,
+              pathname: "/**",
+            },
+          ]
+        : []),
       {
         protocol: "https",
         hostname: "source.unsplash.com",
@@ -112,9 +117,9 @@ const nextConfig = {
     // production alias (used by previews / legacy callbacks).
     serverActions: {
       allowedOrigins: [
-        "thryco.com",
-        "www.thryco.com",
-        "thry-thryco.vercel.app",
+        "localhost:3000",
+        "127.0.0.1:3000",
+        "priya-sarees.vercel.app",
       ],
     },
     // (Next 15+) moved to top-level `serverExternalPackages`.

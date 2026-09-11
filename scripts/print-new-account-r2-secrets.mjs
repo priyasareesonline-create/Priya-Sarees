@@ -8,14 +8,14 @@
  *      npm run deploy:new
  *
  * Usage (fill env first):
- *   NEW_R2_ACCESS_KEY_ID=... NEW_R2_SECRET_ACCESS_KEY=... NEW_R2_ACCOUNT_ID=<thry-account-id> NEW_R2_PUBLIC_URL=https://pub-xxxx.r2.dev node scripts/print-new-account-r2-secrets.mjs
+ *   NEW_R2_ACCESS_KEY_ID=... NEW_R2_SECRET_ACCESS_KEY=... NEW_R2_ACCOUNT_ID=<priya-sarees-account-id> NEW_R2_PUBLIC_URL=https://pub-xxxx.r2.dev node scripts/print-new-account-r2-secrets.mjs
  */
 const accountId =
   process.env.NEW_R2_ACCOUNT_ID?.trim() || "";
 const accessKeyId = process.env.NEW_R2_ACCESS_KEY_ID?.trim();
 const secretAccessKey = process.env.NEW_R2_SECRET_ACCESS_KEY?.trim();
 const publicUrl = process.env.NEW_R2_PUBLIC_URL?.trim();
-const bucket = process.env.NEW_R2_BUCKET?.trim() || "thry-cdn";
+const bucket = process.env.NEW_R2_BUCKET?.trim() || "priya-sarees-cdn";
 
 if (!accessKeyId || !secretAccessKey || !publicUrl) {
   console.error(`Missing env. Set:

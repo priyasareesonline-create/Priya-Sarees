@@ -31,7 +31,7 @@ describe("order confirmation email content", () => {
         name: "Mandala Kit",
         quantity: 1,
         unitPrice: 1000,
-        imageUrl: "https://thryco.com/images/products/mandala.jpg",
+        imageUrl: "http://localhost:3000/images/products/mandala.jpg",
         imageAlt: "Mandala Kit",
         productCode: "MK-001",
       },
@@ -44,12 +44,12 @@ describe("order confirmation email content", () => {
       postalCode: "635126",
       country: "India",
     },
-    orderUrl: "https://thryco.com/orders/ord_test123?token=abc",
+    orderUrl: "http://localhost:3000/orders/ord_test123?token=abc",
   };
 
   it("builds a subject with order id", () => {
     expect(buildOrderConfirmationSubject("ord_test123")).toBe(
-      "Order confirmed — #ord_test123 · THRY",
+      "Order confirmed — #ord_test123 · Priya Sarees",
     );
   });
 
@@ -110,7 +110,7 @@ describe("order confirmation email content", () => {
           name: "Ganesha silicon mould",
           quantity: 1,
           unitPrice: 449,
-          imageUrl: "https://thryco.com/images/products/ganesha.jpg",
+          imageUrl: "http://localhost:3000/images/products/ganesha.jpg",
           imageAlt: "Ganesha",
           productCode: "ST000178",
         },

@@ -1,4 +1,4 @@
-# Resend CLI setup for THRY order confirmation emails.
+# Resend CLI setup for Priya Sarees order confirmation emails.
 # Run from project root in a normal PowerShell window (interactive TTY required for first login).
 #
 # Usage:
@@ -7,7 +7,7 @@
 
 param(
   [string]$ApiKey = "",
-  [string]$FromEmail = "THRY <orders@thryco.com>"
+  [string]$FromEmail = "Priya Sarees"
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,9 +33,9 @@ Write-Host ""
 Write-Host "Checking domains..."
 & $Resend domains list 2>&1
 
-$createKey = Read-Host "Create a new 'THRY Production' API key via CLI? (y/N)"
+$createKey = Read-Host "Create a new 'Priya Sarees Production' API key via CLI? (y/N)"
 if ($createKey -eq "y" -or $createKey -eq "Y") {
-  $json = & $Resend api-keys create --name "THRY Production" --json 2>&1 | Out-String
+  $json = & $Resend api-keys create --name "Priya Sarees Production" --json 2>&1 | Out-String
   Write-Host $json
   try {
     $parsed = $json | ConvertFrom-Json

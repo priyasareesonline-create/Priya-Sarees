@@ -5,17 +5,16 @@ export function HomeExploreLinks() {
   return (
     <section
       className="craft-kraft craft-torn-top rounded-2xl px-4 py-8 md:px-6 md:py-10"
-      aria-labelledby="explore-thry-heading"
+      aria-labelledby="explore-priya-sarees-heading"
     >
       <h2
-        id="explore-thry-heading"
+        id="explore-priya-sarees-heading"
         className="font-[family-name:var(--font-hero-serif)] text-xl font-semibold text-foreground md:text-2xl"
       >
-        Explore THRY
+        Explore Priya Sarees
       </h2>
       <p className="mt-2 max-w-2xl text-sm text-muted-foreground md:text-base">
-        Shop creative 3D printed products — art &amp; craft tools, customised
-        gifts, statues, planters and more.
+        Shop silk, cotton, wedding and festive sarees.
       </p>
       <nav
         className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"

@@ -9,7 +9,7 @@ import {
   resolvePackingSlipShopAddressLines,
 } from "./packing-slip-format";
 
-describe("packing slip format (THRY CO. reference)", () => {
+describe("packing slip format (Priya Sarees reference)", () => {
   it("prints quantity as 1 of 1", () => {
     expect(formatPackingSlipQuantity(1)).toBe("1 of 1");
     expect(formatPackingSlipQuantity(3)).toBe("3 of 3");
@@ -72,7 +72,7 @@ describe("packing slip format (THRY CO. reference)", () => {
   it("prints shop footer as street, pincode city ST, country without shop mobile", () => {
     const footer = buildPackingSlipShopFooter();
     expect(footer.brand).toBe(PACKING_SLIP_BRAND);
-    expect(footer.brand).toBe("THRY CO.");
+    expect(footer.brand).toBe("Priya Sarees");
     expect(PACKING_SLIP_THANKS).toBe("Thank you for shopping with us!");
     expect(footer.address).toBe(
       "355/1, Balaji Nagar Bedrapalii, Sipcot-1, 635126 Hosur TN, India",

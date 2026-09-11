@@ -35,7 +35,7 @@ describe("contact links", () => {
 
   it("fixes WhatsApp when stored contact has local 10-digit number", () => {
     const contact = {
-      name: "THRY",
+      name: "Priya Sarees",
       phone: "8870669160",
       phoneHref: "tel:+8870669160",
     };
@@ -47,9 +47,7 @@ describe("contact links", () => {
   });
 
   it("builds mailto only for a usable shop email", () => {
-    expect(shopMailtoHref("thrycoproduct@gmail.com")).toBe(
-      "mailto:thrycoproduct@gmail.com",
-    );
+    expect(shopMailtoHref("shop@example.com")).toBe("mailto:shop@example.com");
     expect(shopMailtoHref("")).toBeNull();
     expect(shopMailtoHref("not-an-email")).toBeNull();
   });

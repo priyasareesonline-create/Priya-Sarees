@@ -1,8 +1,8 @@
 /**
- * Add Resend DNS records to thryco.com.
+ * Add Resend DNS records to localhost:3000.
  *
  * Auth (first match wins):
- *   1. CLOUDFLARE_API_TOKEN env or .env.local (Zone DNS Edit on thryco.com)
+ *   1. CLOUDFLARE_API_TOKEN env or .env.local (Zone DNS Edit on localhost:3000)
  *   2. Wrangler OAuth — read-only for DNS; will fail on create
  *
  * Usage:
@@ -52,21 +52,21 @@ const headers = {
 const records = [
   {
     type: "TXT",
-    name: "resend._domainkey.thryco.com",
+    name: "resend._domainkey.localhost:3000",
     content:
       "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEQM4u2MhnMeddV0D39cLXW0r3kl6u8AJiTAGeYJyEZU5MXCK2+VUsR5nydh2FIpmeMmrOnCyGMO2DHxMGDZULUVjtQbbRqqhg29yC/AO/QaBfva2Upfd1NrNxEIh2hjchWUNVd1DcNkPJttPUqwVgQ6srJ4F9PDW0IlUwiyS2xwIDAQAB",
     ttl: 1,
   },
   {
     type: "MX",
-    name: "send.thryco.com",
+    name: "send.localhost:3000",
     content: "feedback-smtp.us-east-1.amazonses.com",
     priority: 10,
     ttl: 1,
   },
   {
     type: "TXT",
-    name: "send.thryco.com",
+    name: "send.localhost:3000",
     content: "v=spf1 include:amazonses.com ~all",
     ttl: 1,
   },

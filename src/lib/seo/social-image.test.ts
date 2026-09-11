@@ -7,7 +7,7 @@ import {
 } from "./social-image";
 
 const deps: SocialImageResolveDeps = {
-  siteOrigin: "https://thryco.com",
+  siteOrigin: "http://localhost:3000",
   resolveMediaUrl: (key: string) => {
     if (key.startsWith("http://") || key.startsWith("https://")) return key;
     if (key.startsWith("/")) return key;
@@ -18,13 +18,13 @@ const deps: SocialImageResolveDeps = {
 describe("resolveSocialImageUrl", () => {
   it("falls back when key is missing", () => {
     expect(resolveSocialImageUrl(undefined, deps)).toBe(
-      `https://thryco.com${SOCIAL_IMAGE_FALLBACK_PATH}`,
+      `http://localhost:3000${SOCIAL_IMAGE_FALLBACK_PATH}`,
     );
     expect(resolveSocialImageUrl(null, deps)).toBe(
-      absoluteSocialFallbackUrl("https://thryco.com"),
+      absoluteSocialFallbackUrl("http://localhost:3000"),
     );
     expect(resolveSocialImageUrl("   ", deps)).toBe(
-      absoluteSocialFallbackUrl("https://thryco.com"),
+      absoluteSocialFallbackUrl("http://localhost:3000"),
     );
   });
 
@@ -36,23 +36,23 @@ describe("resolveSocialImageUrl", () => {
 
   it("absolutizes relative non-SVG paths", () => {
     expect(resolveSocialImageUrl("/images/og-default.jpg", deps)).toBe(
-      "https://thryco.com/images/og-default.jpg",
+      "http://localhost:3000/images/og-default.jpg",
     );
   });
 
   it("rejects SVG paths", () => {
-    expect(resolveSocialImageUrl("/images/thry-wordmark.svg", deps)).toBe(
-      absoluteSocialFallbackUrl("https://thryco.com"),
+    expect(resolveSocialImageUrl("/images/priya-sarees-wordmark.svg", deps)).toBe(
+      absoluteSocialFallbackUrl("http://localhost:3000"),
     );
   });
 
   it("rejects Next image optimizer URLs", () => {
     expect(
       resolveSocialImageUrl(
-        "https://thryco.com/_next/image?url=%2Fuploads%2Fa.png&w=1200",
+        "http://localhost:3000/_next/image?url=%2Fuploads%2Fa.png&w=1200",
         deps,
       ),
-    ).toBe(absoluteSocialFallbackUrl("https://thryco.com"));
+    ).toBe(absoluteSocialFallbackUrl("http://localhost:3000"));
   });
 
   it("keeps https media URLs", () => {

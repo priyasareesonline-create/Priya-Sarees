@@ -1,5 +1,5 @@
 /**
- * Thin R2 proxy for THRY on Vercel (no MEDIA_BUCKET on the Next host).
+ * Thin R2 proxy for Priya Sarees on Vercel (no MEDIA_BUCKET on the Next host).
  *
  * Auth:
  * - Authorization: Bearer <MEDIA_PROXY_SECRET> (server / Vercel)

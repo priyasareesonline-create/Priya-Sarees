@@ -1,5 +1,5 @@
 {
-  "name": "thry",
+  "name": "priya-sarees",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,9 +17,9 @@
     "validate:identity": "node scripts/validate-project-identity.mjs",
     "validate:identity:login": "node scripts/validate-project-identity.mjs --strict-wrangler-login",
     "validate:wrangler": "npm run validate:identity && node scripts/validate-wrangler-production.mjs wrangler.workers.new-account.jsonc",
-    "validate:media-proxy": "npm run validate:identity && node scripts/validate-thry-media-proxy.mjs",
+    "validate:media-proxy": "npm run validate:identity && node scripts/validate-priya-sarees-media-proxy.mjs",
     "deploy:media-proxy": "npm run validate:identity && wrangler deploy --config workers/r2-media-proxy/wrangler.jsonc",
-    "deploy:shop-edge": "npm run validate:identity && wrangler deploy --config workers/thry-shop-edge/wrangler.jsonc",
+    "deploy:shop-edge": "npm run validate:identity && wrangler deploy --config workers/priya-sarees-shop-edge/wrangler.jsonc",
     "auth:setup": "npm run validate:identity && node scripts/setup-auth-config.mjs",
     "auth:verify": "npm run validate:identity && node scripts/verify-auth.mjs",
     "pages:build": "cross-env SKIP_ENV_VALIDATION=true opennextjs-cloudflare build --config wrangler.jsonc && node scripts/cf-pages-postbuild.mjs",
@@ -49,7 +49,7 @@
     "db:seed-testimonials": "tsx --env-file=.env.local ./scripts/seed-sakthi-testimonials.ts",
     "db:setup-velo-order-push": "node --env-file=.env.local ./scripts/setup-velo-order-push.mjs",
     "resend:dns": "node scripts/add-resend-dns-cloudflare.mjs",
-    "email:dns:fix": "node scripts/cf-fix-thryco-email-dns.mjs",
+    "email:dns:fix": "node scripts/cf-fix-email-dns.mjs",
     "email:dns:apply": "node scripts/apply-email-dns.mjs",
     "resend:verify-domain": "resend domains verify ef23a9b0-9145-4f59-84fc-0c3a795a06b6",
     "db:migrate-product-lifecycle": "node ./scripts/apply-product-lifecycle.mjs",

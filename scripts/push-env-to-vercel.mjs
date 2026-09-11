@@ -1,5 +1,5 @@
 /**
- * Push selected .env.local keys to Vercel project "thry" (Thryco team).
+ * Push selected .env.local keys to Vercel project "priya-sarees".
  * Usage: VERCEL_TOKEN=... node scripts/push-env-to-vercel.mjs
  */
 import fs from "node:fs";

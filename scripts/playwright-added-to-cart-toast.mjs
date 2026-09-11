@@ -4,7 +4,7 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "http://localhost:3000").replace(/\/$/, "");
 const PDP = "/shop/baby-shivan-idol";
 
 const results = [];

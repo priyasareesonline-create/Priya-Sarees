@@ -8,7 +8,7 @@ describe("resolveOAuthBrowserOrigin", () => {
   const prev = process.env.NEXT_PUBLIC_SITE_URL;
 
   beforeEach(() => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://thryco.com";
+    process.env.NEXT_PUBLIC_SITE_URL = "http://localhost:3000";
   });
 
   afterEach(() => {
@@ -17,36 +17,36 @@ describe("resolveOAuthBrowserOrigin", () => {
   });
 
   it("keeps www when the shopper opened www (PKCE-safe)", () => {
-    expect(resolveOAuthBrowserOrigin("https://www.thryco.com")).toBe(
-      "https://www.thryco.com",
+    expect(resolveOAuthBrowserOrigin("http://localhost:3000")).toBe(
+      "http://localhost:3000",
     );
   });
 
   it("keeps apex when the shopper opened apex", () => {
-    expect(resolveOAuthBrowserOrigin("https://thryco.com")).toBe(
-      "https://thryco.com",
+    expect(resolveOAuthBrowserOrigin("http://localhost:3000")).toBe(
+      "http://localhost:3000",
     );
   });
 
   it("falls back to canonical for unknown hosts", () => {
     expect(resolveOAuthBrowserOrigin("https://evil.example")).toBe(
-      "https://thryco.com",
+      "http://localhost:3000",
     );
   });
 });
 
 describe("getAuthCallbackUrls", () => {
   it("includes apex and www callbacks", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://thryco.com";
+    process.env.NEXT_PUBLIC_SITE_URL = "http://localhost:3000";
     const urls = getAuthCallbackUrls();
     expect(urls).toEqual(
       expect.arrayContaining([
-        "https://thryco.com/auth/callback",
-        "https://www.thryco.com/auth/callback",
+        "http://localhost:3000/auth/callback",
+        "http://localhost:3000/auth/callback",
       ]),
     );
     expect(getAllowedAuthOrigins()).toEqual(
-      expect.arrayContaining(["https://thryco.com", "https://www.thryco.com"]),
+      expect.arrayContaining(["http://localhost:3000", "http://localhost:3000"]),
     );
   });
 });

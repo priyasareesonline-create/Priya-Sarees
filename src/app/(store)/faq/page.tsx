@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `FAQ | ${siteConfig.name}`,
-  description: `Frequently asked questions about ${siteConfig.name} craft supplies`,
+  description: `Frequently asked questions about ${siteConfig.name} sarees`,
 };
 
 const faqs = [
@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "What do you sell?",
-    a: "Terracotta raw materials and art & craft supplies. Each product listing describes materials and usage. Ask us if you need help choosing.",
+    a: "Silk, cotton, wedding and festive sarees. Each product listing describes the weave and occasion. Ask us if you need help choosing.",
   },
   {
     q: "How do returns work?",

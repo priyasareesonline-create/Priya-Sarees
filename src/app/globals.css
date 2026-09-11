@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /*
-      THRY — locked to wordmark gradient
+      Priya Sarees — locked to wordmark gradient
       #f472b6 rose → #e879f9 magenta → #a78bfa lilac → #fbbf24 gold
     */
     --background: 330 55% 98%;
@@ -287,7 +287,7 @@ html {
   animation: phone-glow 2.2s ease-in-out infinite;
 }
 
-/* THRY wordmark lockup */
+/* Priya Sarees wordmark lockup */
 .brand-board-lockup {
   isolation: isolate;
   color-scheme: light;

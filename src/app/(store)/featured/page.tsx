@@ -17,14 +17,14 @@ export const revalidate = 120;
 export const metadata: Metadata = {
   title: "Featured Products",
   description:
-    "Discover handpicked featured craft supplies at THRY — premium styles for weddings, festivals and special occasions.",
+    "Discover handpicked featured sarees at Priya Sarees — premium styles for weddings, festivals and special occasions.",
   alternates: {
     canonical: "/featured",
   },
   openGraph: {
-    title: "Featured Products | THRY",
+    title: "Featured Products | Priya Sarees",
     description:
-      "Discover handpicked featured craft supplies at THRY for weddings and festivals.",
+      "Discover handpicked featured sarees at Priya Sarees for weddings and festivals.",
     url: "/featured",
   },
 };
@@ -57,7 +57,7 @@ async function FeaturedProductsPage() {
     <Shell>
       <Header
         heading="Featured Products"
-        description="Our handpicked craft supplies — materials for make, craft, create"
+        description="Our handpicked sarees for weddings, festivals and everyday wear"
       />
 
       {featuredUnavailable ? (

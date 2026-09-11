@@ -64,8 +64,8 @@ try {
       },
       order_meta: {
         return_url:
-          "https://www.sairaghavendratex.com/api/cashfree/redirect?order_id={order_id}",
-        notify_url: "https://www.sairaghavendratex.com/api/cashfree/webhook",
+          "http://localhost:3000/api/cashfree/redirect?order_id={order_id}",
+        notify_url: "http://localhost:3000/api/cashfree/webhook",
       },
     }),
   });

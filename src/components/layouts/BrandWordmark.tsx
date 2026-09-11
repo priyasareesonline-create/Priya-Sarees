@@ -17,7 +17,7 @@ const sizeClass: Record<BrandWordmarkSize, string> = {
   footer: "text-[3rem] leading-none",
 };
 
-/** THRY text wordmark — colorful girl-forward brand lockup. */
+/** Priya Sarees text wordmark — colorful girl-forward brand lockup. */
 export function BrandWordmark({
   className,
   size = "md",

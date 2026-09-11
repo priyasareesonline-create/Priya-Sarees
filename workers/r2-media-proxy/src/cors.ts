@@ -1,5 +1,5 @@
 /**
- * Browser PUT CORS for THRY storefronts only.
+ * Browser PUT CORS for Priya Sarees storefronts only.
  * Unknown origins get no Access-Control-Allow-Origin (no `*` fallback).
  */
 
@@ -9,17 +9,11 @@ const EXACT_ORIGINS = new Set([
   "https://localhost",
   "http://localhost",
   "capacitor://localhost",
-  "https://thry-thryco.vercel.app",
-  "https://thry-self.vercel.app",
-  "https://thryco.com",
-  "https://www.thryco.com",
-  "https://thry.thrycoproduct.workers.dev",
+  "https://priya-sarees.vercel.app",
 ]);
 
 const PREVIEW_ORIGIN_PATTERNS = [
-  /^https:\/\/thry(-[\w]+)*-thryco\.vercel\.app$/i,
-  /^https:\/\/thry-self-[\w-]+\.vercel\.app$/i,
-  /^https:\/\/thry[\w-]*\.thrycoproduct\.workers\.dev$/i,
+  /^https:\/\/priya-sarees(-[\w]+)*\.vercel\.app$/i,
 ];
 
 export function isAllowedCorsOrigin(origin: string): boolean {

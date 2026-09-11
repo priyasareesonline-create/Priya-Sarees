@@ -30,7 +30,7 @@ if (!getJson.success || !getJson.result?.subdomain) {
     {
       method: "PUT",
       headers,
-      body: JSON.stringify({ subdomain: "thrycoproduct" }),
+      body: JSON.stringify({ subdomain: "priya-sarees" }),
     },
   );
   const putJson = await putRes.json();

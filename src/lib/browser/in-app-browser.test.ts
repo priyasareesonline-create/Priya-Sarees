@@ -19,8 +19,8 @@ describe("in-app-browser", () => {
   });
 
   it("builds an Android Chrome intent URL", () => {
-    expect(buildAndroidChromeIntentUrl("https://thryco.com/shop")).toBe(
-      "intent://thryco.com/shop#Intent;scheme=https;package=com.android.chrome;end",
+    expect(buildAndroidChromeIntentUrl("http://localhost:3000/shop")).toBe(
+      "intent://localhost:3000/shop#Intent;scheme=https;package=com.android.chrome;end",
     );
   });
 

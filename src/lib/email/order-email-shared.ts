@@ -105,7 +105,7 @@ export function formatOrderPhoneLabel(
 
 export function buildEmailBrandHeaderHtml(): string {
   const logoUrl = escapeHtml(
-    `${siteConfig.url.replace(/\/$/, "")}/images/thry-wordmark.svg`,
+    `${siteConfig.url.replace(/\/$/, "")}/images/priya-sarees-wordmark.svg`,
   );
   const name = escapeHtml(siteConfig.name);
   return `<div style="margin-bottom:20px;">

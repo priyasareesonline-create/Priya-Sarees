@@ -9,13 +9,13 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "All Collections",
   description:
-    "Browse craft collections at THRY — terracotta materials, art supplies, and creative kits.",
+    "Browse saree collections at Priya Sarees — silk, cotton, wedding and festive weaves.",
   alternates: {
     canonical: "/collections",
   },
   openGraph: {
-    title: "All Collections | THRY",
-    description: "Browse terracotta and art & craft collections at THRY.",
+    title: "All Collections | Priya Sarees",
+    description: "Browse silk, cotton, wedding and festive collections at Priya Sarees.",
     url: "/collections",
   },
 };

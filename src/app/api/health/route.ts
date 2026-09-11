@@ -55,7 +55,7 @@ export async function GET() {
     {
       status: healthy ? "ok" : "degraded",
       timestamp: checkedAt,
-      service: "thry",
+      service: "priya-sarees",
       checks: {
         database,
         redis,

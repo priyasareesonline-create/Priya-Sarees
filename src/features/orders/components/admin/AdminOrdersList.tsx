@@ -37,7 +37,7 @@ type Props = {
   resetPageParams?: string[];
   pageSizeOptions?: number[];
   emptyMessage?: string;
-  /** Paid section only — packing slip PDF matching the printed THRY CO. sheet. */
+  /** Paid section only — packing slip PDF matching the printed Priya Sarees sheet. */
   enablePdf?: boolean;
 };
 

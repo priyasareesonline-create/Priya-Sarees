@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `Our Story | ${siteConfig.name}`,
-  description: `About ${siteConfig.name} — creative 3D printed products from Hosur, Tamil Nadu.`,
+  description: `About ${siteConfig.name} — silk, cotton and wedding sarees from Hosur, Tamil Nadu.`,
 };
 
 export default function AboutPage() {
@@ -17,8 +17,7 @@ export default function AboutPage() {
       description={`${siteConfig.name} — ${siteConfig.tagline}.`}
     >
       <p>
-        {siteConfig.name} makes creative 3D printed products, art &amp; craft
-        tools, customised gifts, and home essentials.
+        {siteConfig.name} offers silk, cotton, wedding and festive sarees.
       </p>
       <p>
         Based in Hosur, Tamil Nadu. Visit us at {siteConfig.address}

@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (productName) {
     const productDescription =
       product?.description?.trim() ||
-      `Buy ${productName} online from THRY. Creative 3D printed products with secure checkout.`;
+      `Buy ${productName} online from Priya Sarees. Silk, cotton and wedding sarees with secure checkout.`;
     const social = buildSocialImages(product?.featuredImage?.key, productName);
     return {
       title: productName,
@@ -75,23 +75,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         canonical: path,
       },
       openGraph: {
-        title: `${productName} | THRY`,
+        title: `${productName} | Priya Sarees`,
         description: productDescription,
         url: path,
         ...social.openGraph,
       },
       twitter: {
         ...social.twitter,
-        title: `${productName} | THRY`,
+        title: `${productName} | Priya Sarees`,
         description: productDescription,
       },
     };
   }
 
   return {
-    title: "THRY | Creative 3D printed products",
+    title: "Priya Sarees | Silk, cotton & wedding sarees",
     description:
-      "THRY — creative 3D printed products, art and craft tools, and customised gifts.",
+      "Priya Sarees — silk, cotton, wedding and festive sarees with secure checkout.",
   };
 }
 

@@ -14,22 +14,29 @@ import {
   buildOrderDispatchSubject,
 } from "@/lib/email/order-dispatch-content";
 
-const to = process.env.SAMPLE_EMAIL_TO?.trim() || "thrycoproduct@gmail.com";
-const from =
-  process.env.RESEND_FROM_EMAIL?.trim() || "THRY <orders@thryco.com>";
+const to = process.env.SAMPLE_EMAIL_TO?.trim() || "";
+const from = process.env.RESEND_FROM_EMAIL?.trim();
 const apiKey = process.env.RESEND_API_KEY?.trim();
 if (!apiKey) {
   console.error("RESEND_API_KEY missing");
   process.exit(1);
 }
+if (!from) {
+  console.error("RESEND_FROM_EMAIL missing");
+  process.exit(1);
+}
+if (!to) {
+  console.error("SAMPLE_EMAIL_TO missing");
+  process.exit(1);
+}
 
 const lineItems = [
   {
-    name: "Mandala Art Kit",
+    name: "Silk saree",
     quantity: 2,
     unitPrice: 499,
-    imageUrl: "https://thryco.com/images/thry-wordmark.svg",
-    imageAlt: "Mandala Art Kit",
+    imageUrl: "http://localhost:3000/images/priya-sarees-wordmark.svg",
+    imageAlt: "Silk saree",
     productCode: "MK-001",
   },
 ];
@@ -49,7 +56,7 @@ const base = {
     postalCode: "635126",
     country: "India",
   },
-  orderUrl: "https://thryco.com/orders/ord_sample123?token=sample",
+  orderUrl: "http://localhost:3000/orders/ord_sample123?token=sample",
 };
 
 const resend = new Resend(apiKey);
@@ -87,7 +94,7 @@ async function main() {
       },
       paymentMethod: "Razorpay · UPI",
     }),
-    replyTo: "thrycoproduct@gmail.com",
+    replyTo: "",
   });
 
   const dispatch = await resend.emails.send({
@@ -108,7 +115,7 @@ async function main() {
       trackingUrl: "https://www.delhivery.com/track/package/DL123456789IN",
       dispatchedAt: new Date().toISOString(),
     }),
-    replyTo: "thrycoproduct@gmail.com",
+    replyTo: "",
   });
 
   console.log(

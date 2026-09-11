@@ -21,7 +21,7 @@ jobs:
       - name: Warm public routes
         shell: bash
         env:
-          SITE_ORIGIN: https://hubsofcraftss.com
+          SITE_ORIGIN: http://localhost:3000
         run: |
           set -euo pipefail
 
@@ -86,7 +86,7 @@ jobs:
       - name: Release expired stock reservations
         shell: bash
         env:
-          SITE_ORIGIN: https://hubsofcraftss.com
+          SITE_ORIGIN: http://localhost:3000
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           set -euo pipefail

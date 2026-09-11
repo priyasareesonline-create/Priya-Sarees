@@ -4,7 +4,7 @@
  * Usage: node scripts/validate-production-security.mjs [baseUrl]
  */
 
-const BASE = (process.argv[2] ?? "https://www.sairaghavendratex.com").replace(
+const BASE = (process.argv[2] ?? "http://localhost:3000").replace(
   /\/$/,
   "",
 );
@@ -88,7 +88,7 @@ async function checkRoute(route) {
 }
 
 async function checkHttpsRedirect() {
-  const res = await fetch("http://www.sairaghavendratex.com/", {
+  const res = await fetch("http://localhost:3000/", {
     redirect: "manual",
   });
   if (![301, 308, 302, 307].includes(res.status)) {

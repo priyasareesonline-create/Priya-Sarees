@@ -19,7 +19,7 @@ export function buildOrganizationJsonLd() {
     "@type": "Organization",
     name: siteConfig.name.replace("®", "").trim(),
     url: absoluteUrl(),
-    logo: absoluteUrl("/images/thry-wordmark.svg"),
+    logo: absoluteUrl("/images/priya-sarees-wordmark.svg"),
     email: siteConfig.email || undefined,
     telephone: siteConfig.phone || undefined,
     address: {
@@ -59,7 +59,7 @@ export function buildStoreJsonLd() {
     "@type": "Store",
     name: siteConfig.name.replace("®", "").trim(),
     url: absoluteUrl(),
-    image: absoluteUrl("/images/thry-wordmark.svg"),
+    image: absoluteUrl("/images/priya-sarees-wordmark.svg"),
     telephone: siteConfig.phone || undefined,
     email: siteConfig.email || undefined,
     address: {
@@ -78,7 +78,7 @@ export function buildSiteNavigationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "THRY primary navigation",
+    name: "Priya Sarees primary navigation",
     itemListElement: SEO_PRIMARY_NAV.map((item, index) => ({
       "@type": "SiteNavigationElement",
       position: index + 1,

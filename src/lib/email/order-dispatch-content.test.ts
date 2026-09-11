@@ -19,7 +19,7 @@ describe("order dispatch email content", () => {
         name: "Mandala Kit",
         quantity: 2,
         unitPrice: 500,
-        imageUrl: "https://thryco.com/images/products/mandala.jpg",
+        imageUrl: "http://localhost:3000/images/products/mandala.jpg",
         imageAlt: "Mandala Kit",
         productCode: "MK-001",
       },
@@ -32,7 +32,7 @@ describe("order dispatch email content", () => {
       postalCode: "635126",
       country: "India",
     },
-    orderUrl: "https://thryco.com/orders/ord_dispatch1?token=abc",
+    orderUrl: "http://localhost:3000/orders/ord_dispatch1?token=abc",
     courierName: "Delhivery",
     trackingNumber: "DL123456789",
     trackingUrl: "https://www.delhivery.com/track/package/DL123456789",
@@ -45,7 +45,7 @@ describe("order dispatch email content", () => {
 
   it("builds a subject with order id", () => {
     expect(buildOrderDispatchSubject("ord_dispatch1")).toBe(
-      "Your order has shipped — #ord_dispatch1 · THRY",
+      "Your order has shipped — #ord_dispatch1 · Priya Sarees",
     );
   });
 

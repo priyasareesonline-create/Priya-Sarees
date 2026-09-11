@@ -30,14 +30,14 @@ export const revalidate = 120;
 export const metadata: Metadata = {
   title: "Shop All Products",
   description:
-    "Browse all silk, cotton, wedding and festive craft supplies at THRY. Shop online with secure checkout and delivery across India.",
+    "Browse all silk, cotton, wedding and festive sarees at Priya Sarees. Shop online with secure checkout and delivery across India.",
   alternates: {
     canonical: "/shop",
   },
   openGraph: {
-    title: "Shop All Products | THRY",
+    title: "Shop All Products | Priya Sarees",
     description:
-      "Browse all silk, cotton, wedding and festive craft supplies at THRY.",
+      "Browse all silk, cotton, wedding and festive sarees at Priya Sarees.",
     url: "/shop",
   },
 };

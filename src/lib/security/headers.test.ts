@@ -57,7 +57,6 @@ describe("security headers", () => {
     expect(CONTENT_SECURITY_POLICY).toContain(
       "https://*.r2.cloudflarestorage.com",
     );
-    expect(CONTENT_SECURITY_POLICY).toContain("https://media.thryco.com");
   });
 
   it("allows the Cloudflare Web Analytics beacon (script + RUM endpoint)", () => {

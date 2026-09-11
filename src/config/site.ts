@@ -2,7 +2,7 @@ import type { NavItemWithOptionalChildren } from "@/types";
 
 export type SiteConfig = typeof siteConfig;
 
-/** THRY storefront */
+/** Priya Sarees storefront */
 const ADDRESS_LINES = [
   "355/1, Balaji Nagar Bedrapalii, Sipcot-1",
   "Hosur-635126",
@@ -15,7 +15,7 @@ const CONTACTS: readonly {
   phone: string;
   phoneHref: string;
 }[] = [];
-const EMAIL = "thrycoproduct@gmail.com";
+const EMAIL = "";
 const GSTIN = "";
 
 const SOCIAL = {
@@ -26,15 +26,15 @@ const SOCIAL = {
 } as const;
 
 export const siteConfig = {
-  shopBoardName: "THRY",
-  name: "THRY",
-  shortName: "THRY",
-  tagline: "Creative 3D printed products",
+  shopBoardName: "Priya Sarees",
+  name: "Priya Sarees",
+  shortName: "Priya",
+  tagline: "Silk, cotton & wedding sarees",
   location: "Hosur, Tamil Nadu",
   description:
-    "THRY — creative 3D printed products, art & craft tools, customised gifts and home essentials.",
-  searchPlaceholder: "Search products…",
-  url: "https://thryco.com",
+    "Priya Sarees — silk, cotton, wedding and festive sarees with secure checkout and delivery across India.",
+  searchPlaceholder: "Search sarees…",
+  url: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000",
   addressLines: ADDRESS_LINES,
   address: ADDRESS_LINES.join(", "),
   phone: "",
@@ -47,27 +47,27 @@ export const siteConfig = {
   social: SOCIAL,
   announcements: [
     {
-      text: "Welcome to THRY — creative 3D printed products",
+      text: "Welcome to Priya Sarees — silk, cotton and wedding weaves",
       href: "/shop",
       cta: "Shop now",
     },
     {
-      text: "Art & craft tools · clay cutters · stamps · mandala kits",
+      text: "Wedding & festive sarees for every occasion",
       href: "/shop",
       cta: "Explore",
     },
     {
-      text: "Customised gifts for every occasion",
+      text: "New arrivals and featured collections",
       href: "/collections",
-      cta: "Browse gifts",
+      cta: "Browse collections",
     },
     {
-      text: "3D printed statues · planters · toys & home essentials",
+      text: "Silk, cotton and everyday wear — shop the range",
       href: "/shop",
       cta: "See more",
     },
     {
-      text: "New drops & festive favourites — shop the collection",
+      text: "Handpicked favourites — shop featured sarees",
       href: "/featured",
       cta: "Featured",
     },
@@ -130,7 +130,7 @@ export const siteConfig = {
       ],
     },
     {
-      title: "About THRY",
+      title: "About Priya Sarees",
       items: [
         { title: "Our Story", href: "/about", items: [] },
         { title: "Our Collections", href: "/collections", items: [] },

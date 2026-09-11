@@ -8,8 +8,8 @@ import { Metadata } from "next";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | THRY",
-  description: "Terms and Conditions and Terms of Use for shopping at THRY.",
+  title: "Terms & Conditions | Priya Sarees",
+  description: "Terms and Conditions and Terms of Use for shopping at Priya Sarees.",
   alternates: {
     canonical: "/terms-and-conditions",
   },
@@ -39,7 +39,7 @@ export default async function TermsAndConditionsPage() {
           <Link href="/" className="text-primary hover:underline">
             {siteConfig.url.replace(/^https:\/\//, "")}
           </Link>{" "}
-          operated by {businessName}, a 3D printed products merchant based in
+          operated by {businessName}, a saree merchant based in
           Hosur, Tamil Nadu, India (&quot;we&quot;, &quot;us&quot;,
           &quot;our&quot;).
         </p>
@@ -59,7 +59,7 @@ export default async function TermsAndConditionsPage() {
         </h2>
         <p>
           You may use this website only for lawful purposes related to browsing
-          and purchasing craft supplies and related products.
+          and purchasing sarees and related products.
         </p>
         <ul className="list-disc space-y-1 pl-5">
           <li>

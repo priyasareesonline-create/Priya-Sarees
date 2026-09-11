@@ -2,7 +2,7 @@
  * Supabase deprecated direct host db.<ref>.supabase.co for many serverless hosts.
  * Prefer Session pooler: postgres.<ref>@aws-0-<region>.pooler.supabase.com:6543
  *
- * THRY project (azqgyxdzwlhdmjvkngbs) uses aws-0-ap-south-1. Do not rewrite to aws-1.
+ * Priya Sarees project (azqgyxdzwlhdmjvkngbs) uses aws-0-ap-south-1. Do not rewrite to aws-1.
  */
 const DEFAULT_REGION = "ap-south-1";
 const DEFAULT_AWS_PREFIX = "aws-0";

@@ -1,5 +1,5 @@
 /**
- * Enable Google single-tap sign-in on Supabase Auth for THRY.
+ * Enable Google single-tap sign-in on Supabase Auth for Priya Sarees.
  *
  * Prerequisites (put in .env.local):
  *   SUPABASE_ACCESS_TOKEN   — https://supabase.com/dashboard/account/tokens
@@ -33,7 +33,7 @@ How to finish Google single-tap (about 3 minutes):
 
 1) Google Cloud Console → APIs & Services → Credentials
    Create OAuth client ID → Application type: Web application
-   Name: THRY Web
+   Name: Priya Sarees Web
    Authorized redirect URIs — add exactly:
      https://azqgyxdzwlhdmjvkngbs.supabase.co/auth/v1/callback
 

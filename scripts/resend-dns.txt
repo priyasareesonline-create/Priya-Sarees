@@ -1,4 +1,4 @@
-# Resend DNS for thryco.com (add in Cloudflare → thryco.com → DNS)
+# Resend DNS for localhost:3000 (add in Cloudflare → localhost:3000 → DNS)
 
 | Type | Name | Content / Value | Priority |
 |------|------|-----------------|----------|
@@ -15,9 +15,9 @@ After adding records, verify:
 Then set Vercel production env (after `vercel login`):
 
 ```powershell
-cd e:\THRY\HiyoRi-Ecommerce-Nextjs-Supabase
+cd e:\Priya Sarees\HiyoRi-Ecommerce-Nextjs-Supabase
 echo re_YOUR_KEY | vercel env add RESEND_API_KEY production --force
-echo "THRY <orders@thryco.com>" | vercel env add RESEND_FROM_EMAIL production --force
+echo "Priya Sarees" | vercel env add RESEND_FROM_EMAIL production --force
 vercel deploy --prod
 ```
 

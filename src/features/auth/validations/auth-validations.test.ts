@@ -6,7 +6,7 @@ import {
 
 describe("passwordCreateSchema", () => {
   it("accepts a short simple password", () => {
-    expect(passwordCreateSchema.safeParse("thry12").success).toBe(true);
+    expect(passwordCreateSchema.safeParse("priya12").success).toBe(true);
   });
 
   it("rejects under 6 characters", () => {

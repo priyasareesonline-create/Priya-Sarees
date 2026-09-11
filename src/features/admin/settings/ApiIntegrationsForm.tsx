@@ -489,7 +489,7 @@ export function ApiIntegrationsForm() {
               dashboard.razorpay.com link).
             </p>
             <p className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-950">
-              Live payments are blocked until <strong>thryco.com</strong> is
+              Live payments are blocked until your production shop domain is
               registered on this Razorpay account (MID). Razorpay Dashboard →
               Account & Settings →{" "}
               <a
@@ -500,9 +500,8 @@ export function ApiIntegrationsForm() {
               >
                 Business website details
               </a>
-              . Add <strong>https://thryco.com</strong>,{" "}
-              <strong>https://www.thryco.com</strong>, and{" "}
-              <strong>https://thry-thryco.vercel.app</strong>. Until Razorpay
+              . Add <strong>https://priya-sarees.vercel.app</strong> and your
+              custom domain when it is live. Until Razorpay
               approves the domain, UPI Continue will fail even if checkout
               opens.
             </p>

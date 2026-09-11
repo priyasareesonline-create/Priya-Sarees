@@ -1,5 +1,5 @@
 /**
- * Load Hub of craftss project.identity.json — single public source of truth.
+ * Load Priya Sarees project.identity.json — single public source of truth.
  * Secrets never live here; only IDs, hosts, and account pins.
  */
 import fs from "node:fs";

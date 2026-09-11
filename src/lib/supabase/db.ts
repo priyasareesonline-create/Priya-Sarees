@@ -16,7 +16,7 @@ if (!connectionString) {
 export type AppDatabase = PostgresJsDatabase<typeof schema>;
 
 type GlobalDb = typeof globalThis & {
-  __thryPgDb?: AppDatabase;
+  __priyaSareesPgDb?: AppDatabase;
 };
 
 /**
@@ -41,10 +41,10 @@ function createDb(max = 1): AppDatabase {
 
 function getSingletonDb(): AppDatabase {
   const g = globalThis as GlobalDb;
-  if (!g.__thryPgDb) {
-    g.__thryPgDb = createDb(1);
+  if (!g.__priyaSareesPgDb) {
+    g.__priyaSareesPgDb = createDb(1);
   }
-  return g.__thryPgDb;
+  return g.__priyaSareesPgDb;
 }
 
 const requestDb = new AsyncLocalStorage<AppDatabase>();

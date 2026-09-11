@@ -189,7 +189,7 @@ export function buildOrderConfirmationHtml(
   `;
 
   return buildEmailLayoutHtml({
-    preheader: `Your THRY order #${input.orderId} is confirmed.`,
+    preheader: `Your Priya Sarees order #${input.orderId} is confirmed.`,
     bodyHtml,
   });
 }

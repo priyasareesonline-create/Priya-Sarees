@@ -26,7 +26,7 @@ const oldCdn = (
   env.NEXT_PUBLIC_CDN_URL ||
   "https://pub-8ba09eae4a094c6cbdc094006fbc43af.r2.dev"
 ).replace(/\/$/, "");
-const bucket = process.env.NEW_R2_BUCKET || "thry-cdn";
+const bucket = process.env.NEW_R2_BUCKET || "priya-sarees-cdn";
 const token = process.env.CLOUDFLARE_API_TOKEN;
 const accountId =
   process.env.CLOUDFLARE_ACCOUNT_ID || "";

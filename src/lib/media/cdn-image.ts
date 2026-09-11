@@ -36,14 +36,15 @@ export function cdnPresetForWidth(width: number): CdnImageOptions {
   return { ...CDN_PRESETS.thumb, width: w };
 }
 
-const DEFAULT_MEDIA_ORIGIN = "https://media.thryco.com";
-const FALLBACK = "/images/thry-hero-statues.svg";
+const DEFAULT_MEDIA_ORIGIN = "";
+const FALLBACK = "/images/priya-sarees-hero-festive.svg";
 
 export function getImageDeliveryMode(): ImageDeliveryMode {
-  // Cloudflare /cdn is live on media.thryco.com (validated ~98% smaller WebP).
-  // Set NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy to roll back to raw R2 URLs.
+  // Use legacy (raw R2) until NEXT_PUBLIC_MEDIA_CDN_ORIGIN points at the
+  // Priya Sarees media worker. Set NEXT_PUBLIC_IMAGE_DELIVERY_MODE=cloudflare
+  // after that worker is live.
   const raw = String(
-    process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE ?? "cloudflare",
+    process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE ?? "legacy",
   )
     .trim()
     .toLowerCase();
@@ -81,7 +82,7 @@ export function extractMediaObjectKey(keyOrUrl: string): string | null {
   if (raw.startsWith("http://") || raw.startsWith("https://")) {
     try {
       const url = new URL(raw);
-      if (url.hostname === "media.thryco.com" || url.origin === mediaOrigin()) {
+      if (url.origin === mediaOrigin() && mediaOrigin()) {
         const m = url.pathname.match(/^\/cdn\/[^/]+\/(.+)$/);
         return m?.[1] ? decodeURIComponent(m[1]) : null;
       }
@@ -106,7 +107,7 @@ export function extractMediaObjectKey(keyOrUrl: string): string | null {
 }
 
 /**
- * Build a Cloudflare Images resize URL on media.thryco.com.
+ * Build a Cloudflare Images resize URL on localhost:3000.
  * Falls back to the original key/URL when mode is legacy or key is not CDN media.
  */
 export function cdnImageUrl(

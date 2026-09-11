@@ -29,6 +29,7 @@ yarn-error.log*
 .env*.local
 .env.vercel*
 .env
+PriyaSarees_ENVkey.txt
 
 # local credential probe files
 scripts/.r2-creds.tmp.json
@@ -48,21 +49,12 @@ scripts/deleted-media-backup-*.json
 # cloudflare/wrangler local state + local vars
 .wrangler
 .dev.vars
+.dev.vars.new-account
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
 .wrangler-dry/
-
-
-.dev.vars.new-account
 .env.local.bak-migrate
-wrangler.workers.new-account.jsonc
-
-
-.dev.vars.new-account
-
-scripts/.thry-r2-secrets.local.json
-scripts/setup-thry-r2-from-wrangler.mjs
-
+scripts/.priya-sarees-r2-secrets.local.json

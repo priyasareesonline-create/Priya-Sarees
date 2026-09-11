@@ -16,7 +16,7 @@ type Props = Omit<ImageProps, "onError" | "src"> & {
   src: string;
   /**
    * When set, rewrite R2/CDN URLs through Cloudflare Images resize
-   * (media.thryco.com/cdn/...). Ignored for local SVGs / legacy mode.
+   * (localhost:3000/cdn/...). Ignored for local SVGs / legacy mode.
    * Prefer `cdnOptions` when a named preset (e.g. heroMobile) must match preload.
    */
   optimizeWidth?: number;
