@@ -35,12 +35,22 @@ export function supabaseStoragePublicUrl(storagePath: string) {
 }
 
 export function r2PublicUrl(key: string) {
+  const normalized = key.replace(/^\//, "");
   const base = env.NEXT_PUBLIC_CDN_URL.replace(/\/$/, "");
-  return `${base}/${key.replace(/^\//, "")}`;
+  // Private R2 S3 API host is not a public CDN — serve via app proxy instead.
+  if (
+    !base ||
+    base.includes("r2.cloudflarestorage.com") ||
+    base.includes("amazonaws.com")
+  ) {
+    return `/api/r2/${normalized}`;
+  }
+  return `${base}/${normalized}`;
 }
 
 /** Local SVG if CDN key is missing or the remote file fails to load. */
-export const STOREFRONT_IMAGE_FALLBACK = "/images/priya-sarees-hero-festive.svg";
+export const STOREFRONT_IMAGE_FALLBACK =
+  "/images/priya-sarees-hero-festive.svg";
 
 /** OpenNext on Cloudflare serves `/_next/image` with attachment headers for remote URLs. */
 export function shouldBypassImageOptimization(src: string): boolean {
@@ -70,7 +80,7 @@ export const keytoUrl = (key?: string) => {
     return key;
   }
 
-  // Local public assets (e.g. /images/priya-sarees-wordmark.svg)
+  // Local public assets (e.g. /images/priya-sarees-logo.png)
   if (key.startsWith("/")) {
     return key;
   }

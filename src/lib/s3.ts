@@ -68,6 +68,13 @@ function objectUrl(key: string) {
   return `${endpoint}/${bucket}/${encodedKey}`;
 }
 
+/** Public storefront reads (signed server-side). Same path as private objectUrl. */
+export function objectUrlForPublicRead(key: string) {
+  return objectUrl(key);
+}
+
+export { getAwsClient };
+
 function mediaProxyConfig(): { baseUrl: string; secret: string } | null {
   const baseUrl = env.R2_MEDIA_PROXY_URL?.replace(/\/$/, "");
   const secret = env.R2_MEDIA_PROXY_SECRET?.trim();
