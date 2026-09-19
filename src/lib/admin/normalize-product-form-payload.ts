@@ -74,7 +74,7 @@ export function normalizeProductFormPayload(
   }
 
   const rating = normalizeDecimalInput(data.rating, {
-    fallback: "4",
+    fallback: "5",
     fieldLabel: "Rating",
     min: 0,
     max: 5,

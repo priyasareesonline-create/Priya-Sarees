@@ -159,7 +159,7 @@ export function VeloKeysForm() {
       "  collectionId: 'COLLECTION_UUID',",
       "  tags: ['stamp'],",
       "  badge: 'featured',",
-      "  rating: '4',",
+      "  rating: '5',",
       "  price: '199',",
       "  stock: 1,",
       "  isDraft: false,",

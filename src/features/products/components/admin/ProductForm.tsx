@@ -257,7 +257,7 @@ const productFormSchema = createInsertSchema(products)
         ),
     ),
     rating: z.preprocess((value) => {
-      if (value == null || String(value).trim() === "") return "4";
+      if (value == null || String(value).trim() === "") return "5";
       return typeof value === "string" ? value.trim() : value;
     }, z.string().min(1)),
     collectionId: z
@@ -396,6 +396,7 @@ function ProductFrom({ product, galleryMediaIds = [] }: ProductsFormProps) {
       soldAsPack: product?.soldAsPack ?? false,
       isDigital: product?.isDigital ?? false,
       packSize: product?.packSize ?? null,
+      rating: product?.rating ?? "5",
       stock: typeof product?.stock === "number" ? product.stock : 1,
       featuredImageId:
         product?.featuredImageId ??
@@ -1302,21 +1303,6 @@ function ProductFrom({ product, galleryMediaIds = [] }: ProductsFormProps) {
             </FormItem>
           ) : null}
 
-          <FormItem>
-            <FormLabel className="text-sm">Product Code</FormLabel>
-            <FormControl>
-              <Input
-                value={form.watch("productCode") ?? ""}
-                readOnly
-                placeholder="Auto-generated (ST...)"
-              />
-            </FormControl>
-            <FormDescription>
-              Auto-generated when the product is saved (e.g. ST000045).
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-
           <FormField
             control={control}
             name="isDraft"
@@ -1457,15 +1443,17 @@ function ProductFrom({ product, galleryMediaIds = [] }: ProductsFormProps) {
           <BadgeSelectField name="badge" label={""} />
 
           <FormItem>
-            <FormLabel className="text-sm">Rating*</FormLabel>
+            <FormLabel className="text-sm">Rating</FormLabel>
             <FormControl>
               <Input
-                defaultValue={product?.rating}
                 aria-invalid={!!form.formState.errors.rating}
-                placeholder="Rating (0-5)."
+                placeholder="Defaults to 5 (0–5)"
                 {...register("rating")}
               />
             </FormControl>
+            <FormDescription>
+              Defaults to 5. Change only if you want a different score.
+            </FormDescription>
             <FormMessage />
           </FormItem>
 

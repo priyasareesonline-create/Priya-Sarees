@@ -33,11 +33,11 @@ describe("normalizeDecimalInput", () => {
   it("uses fallback for blank optional decimals", () => {
     expect(
       normalizeDecimalInput("  ", {
-        fallback: "4",
+        fallback: "5",
         fieldLabel: "Rating",
         required: false,
       }),
-    ).toBe("4");
+    ).toBe("5");
   });
 
   it("rejects non-numeric text", () => {
@@ -83,7 +83,7 @@ describe("normalizeProductFormPayload", () => {
         rating: "" as never,
         price: "1299",
       }).rating,
-    ).toBe("4");
+    ).toBe("5");
 
     expect(() =>
       normalizeProductFormPayload({

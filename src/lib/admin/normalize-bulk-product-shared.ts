@@ -20,7 +20,7 @@ export const bulkSharedInputSchema = z
       .optional()
       .nullable()
       .transform((value) => value ?? null),
-    rating: z.string().trim().min(1).default("4"),
+    rating: z.string().trim().min(1).default("5"),
     price: z.string().trim().min(1).default("0"),
     stock: z.coerce.number().int().min(0).max(99999).default(0),
     discountEnabled: z.coerce.boolean().default(false),
@@ -175,7 +175,7 @@ export function buildBulkSharedPayloadFromForm(values: {
       values.badge == null || values.badge === "" ? null : String(values.badge),
     rating:
       values.rating == null || String(values.rating).trim() === ""
-        ? "4"
+        ? "5"
         : String(values.rating).trim(),
     price:
       values.price == null || String(values.price).trim() === ""

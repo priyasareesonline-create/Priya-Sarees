@@ -289,7 +289,7 @@ export const products = pgTable(
     badge: text("badge", { enum: ["new_product", "best_sale", "featured"] }),
     rating: decimal("rating", { precision: 2, scale: 1 })
       .notNull()
-      .default("4"),
+      .default("5"),
     tags: jsonStringArray("tags").default([]).notNull(),
     images: jsonStringArray("images").default([]).notNull(),
     price: decimal("price", { precision: 8, scale: 2 })
