@@ -1,15 +1,20 @@
 import AdminShell from "@/components/admin/AdminShell";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdminOrdersClientPanel } from "@/features/orders/components/admin/AdminOrdersClientPanel";
 import {
-  AdminOrdersSegmentTabs,
-  type OrdersSegment,
-} from "@/features/orders/components/admin/AdminOrdersSegmentTabs";
+  adminOrdersDateFiltersFromSearchParams,
+  createThisMonthDateFilters,
+  resolveAdminOrdersDateFilters,
+  type AdminOrdersDateFilterState,
+} from "@/lib/admin/admin-orders-date-filter";
+import { parseOrdersSegment } from "@/lib/admin/admin-orders-segment";
 import {
   clampAdminOrdersPageSize,
   getAdminOrdersCounts,
   getAdminOrdersList,
   parseAdminOrdersPage,
+  type AdminOrdersListResult,
 } from "@/lib/admin/getAdminOrdersList";
 import { publicErrorMessage } from "@/lib/api/public-error";
 import { withDbAsync } from "@/lib/supabase/db";
@@ -47,13 +52,17 @@ type AdminOrdersPageProps = {
   }>;
 };
 
-function parseOrdersSegment(
-  value: string | string[] | undefined,
-): OrdersSegment {
-  const raw = String(Array.isArray(value) ? value[0] : value ?? "")
-    .trim()
-    .toLowerCase();
-  return raw === "unpaid" || raw === "pending" ? "unpaid" : "paid";
+function firstParam(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function emptyList(pageSize: number): AdminOrdersListResult {
+  return {
+    rows: [],
+    totalCount: 0,
+    page: 1,
+    pageSize,
+  };
 }
 
 export default async function OrdersPage({
@@ -77,28 +86,33 @@ async function OrdersPageContent({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const rawPageSize = searchParams[PAGE_SIZE_PARAM];
   const pageSize = clampAdminOrdersPageSize(
-    Number.parseInt(
-      String(Array.isArray(rawPageSize) ? rawPageSize[0] : rawPageSize),
-      10,
-    ) || undefined,
+    Number.parseInt(String(firstParam(searchParams[PAGE_SIZE_PARAM])), 10) ||
+      undefined,
   );
-  const segment = parseOrdersSegment(searchParams[STATUS_PARAM]);
+  const segment = parseOrdersSegment(firstParam(searchParams[STATUS_PARAM]));
   const paidPage = parseAdminOrdersPage(searchParams[PAID_PAGE_PARAM]);
   const pendingPage = parseAdminOrdersPage(searchParams[PENDING_PAGE_PARAM]);
 
-  const emptyList = {
-    rows: [] as Awaited<ReturnType<typeof getAdminOrdersList>>["rows"],
-    totalCount: 0,
-    page: 1,
-    pageSize,
-  };
+  const fromParams = adminOrdersDateFiltersFromSearchParams({
+    from: firstParam(searchParams.from),
+    to: firstParam(searchParams.to),
+    all: firstParam(searchParams.all),
+    preset: firstParam(searchParams.preset),
+  });
+  const hasExplicitDate =
+    Boolean(firstParam(searchParams.all)) ||
+    Boolean(firstParam(searchParams.preset)) ||
+    Boolean(firstParam(searchParams.from)) ||
+    Boolean(firstParam(searchParams.to));
+  const dateFilter: AdminOrdersDateFilterState = resolveAdminOrdersDateFilters(
+    hasExplicitDate ? fromParams : createThisMonthDateFilters(),
+  );
 
   let fetchError: string | null = null;
   let counts = { paid: 0, pending: 0 };
-  let paid = emptyList;
-  let unpaid = emptyList;
+  let paid = emptyList(pageSize);
+  let unpaid = emptyList(pageSize);
 
   try {
     // Sequential on purpose: Vercel uses a single postgres.js connection
@@ -106,22 +120,30 @@ async function OrdersPageContent({
     // queries pipeline on that socket and hang until the request dies —
     // which previously looked like an endless skeleton, then this alert.
     const result = await withDbAsync(async () => {
-      const nextCounts = await getAdminOrdersCounts();
+      const nextCounts = await getAdminOrdersCounts(dateFilter);
       if (segment === "paid") {
         const nextPaid = await getAdminOrdersList({
           segment: "paid",
           page: paidPage,
           pageSize,
+          dateFilter,
+          totalCountHint: nextCounts.paid,
         });
-        return { counts: nextCounts, paid: nextPaid, unpaid: emptyList };
+        return { counts: nextCounts, paid: nextPaid, unpaid: emptyList(pageSize) };
       }
 
       const nextUnpaid = await getAdminOrdersList({
         segment: "pending",
         page: pendingPage,
         pageSize,
+        dateFilter,
+        totalCountHint: nextCounts.pending,
       });
-      return { counts: nextCounts, paid: emptyList, unpaid: nextUnpaid };
+      return {
+        counts: nextCounts,
+        paid: emptyList(pageSize),
+        unpaid: nextUnpaid,
+      };
     });
     counts = result.counts;
     paid = result.paid;
@@ -153,7 +175,7 @@ async function OrdersPageContent({
         </Alert>
       ) : null}
 
-      <AdminOrdersSegmentTabs
+      <AdminOrdersClientPanel
         segment={segment}
         counts={counts}
         paid={paid}
@@ -162,6 +184,7 @@ async function OrdersPageContent({
         unpaidPageParam={PENDING_PAGE_PARAM}
         pageSizeParam={PAGE_SIZE_PARAM}
         resetPageParams={resetPageParams}
+        dateFilter={dateFilter}
       />
     </div>
   );

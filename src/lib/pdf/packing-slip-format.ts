@@ -3,7 +3,7 @@ import { parseAddressLines } from "@/lib/admin/shop-contact";
 import { INDIA_TIME_ZONE } from "@/lib/datetime/india";
 import type { ShippingAddressFields } from "@/lib/orders/shipping-address-text";
 
-export const PACKING_SLIP_BRAND = "Priya Sarees";
+export const PACKING_SLIP_BRAND = siteConfig.name;
 export const PACKING_SLIP_THANKS = "Thank you for shopping with us!";
 
 const STATE_ABBR: Record<string, string> = {
@@ -94,7 +94,7 @@ export function formatPackingSlipOrderHeading(orderId: string): string {
   return `Order #${id}`;
 }
 
-/** SHIP TO / BILL TO body lines (name, street, pincode city ST, country). */
+/** SHIP TO body lines (name, street, pincode city ST, country [, phone]). */
 export function buildPackingSlipRecipientLines(order: {
   customerName: string | null;
   customerMobile?: string | null;
@@ -132,6 +132,40 @@ export function buildPackingSlipRecipientLines(order: {
   return lines;
 }
 
+/**
+ * FROM body lines for the packing slip — shop / sender address
+ * (admin shop-contact when enabled, else siteConfig.addressLines).
+ */
+export function buildPackingSlipFromLines(
+  addressLines?: readonly string[] | null,
+  options?: { includePhone?: boolean },
+): string[] {
+  const lines: string[] = [];
+  const brand = String(PACKING_SLIP_BRAND ?? "").trim() || siteConfig.name;
+  lines.push(brand);
+
+  const raw = (
+    addressLines && addressLines.length > 0
+      ? addressLines
+      : siteConfig.addressLines
+  )
+    .map((line) => String(line ?? "").trim())
+    .filter(Boolean);
+
+  const withoutCountry = raw.filter((line) => !/^india$/i.test(line));
+  for (const line of withoutCountry) {
+    lines.push(line);
+  }
+  lines.push("India");
+
+  if (options?.includePhone !== false) {
+    const phone = String(siteConfig.phone ?? "").trim();
+    if (phone) lines.push(phone);
+  }
+
+  return lines;
+}
+
 /** Shop address for the packing-slip footer: admin setting, else code default. */
 export function resolvePackingSlipShopAddressLines(
   adminSetting?: {
@@ -147,9 +181,8 @@ export function resolvePackingSlipShopAddressLines(
 }
 
 /**
- * Footer address like the printed sheet:
- * `Devi nagar hosur, No:1, 635109 Hosur TN, India`
- * Live shop data: street, then `pincode city ST`, then country.
+ * Footer address for the packing slip.
+ * Joins shop address lines and ensures India is present.
  */
 export function buildPackingSlipShopFooter(
   addressLines?: readonly string[] | null,
@@ -158,21 +191,18 @@ export function buildPackingSlipShopFooter(
   address: string;
   mobile: string;
 } {
-  const lines =
+  const lines = (
     addressLines && addressLines.length > 0
       ? addressLines
-      : siteConfig.addressLines;
-  const [street = "", cityLine = "", stateLine = "", country = "India"] = lines;
-  const pinMatch = cityLine.match(/(\d{6})/);
-  const city = cityLine
-    .replace(/[-,]?\s*\d{6}/, "")
-    .replace(/^\d{6}\s*/, "")
-    .replace(/[-,]/g, " ")
-    .trim();
-  const locality = [pinMatch?.[1] ?? "", city, abbreviateState(stateLine)]
-    .filter(Boolean)
-    .join(" ");
-  const address = [street, locality, country].filter(Boolean).join(", ");
+      : siteConfig.addressLines
+  )
+    .map((line) => String(line ?? "").trim())
+    .filter(Boolean);
+
+  const hasIndia = lines.some((line) => /^india$/i.test(line));
+  const withoutCountry = lines.filter((line) => !/^india$/i.test(line));
+  const address = (hasIndia ? lines : [...withoutCountry, "India"]).join(", ");
+
   return {
     brand: PACKING_SLIP_BRAND,
     address,

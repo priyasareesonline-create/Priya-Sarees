@@ -1,15 +1,17 @@
+import { siteConfig } from "@/config/site";
 import {
   PACKING_SLIP_BRAND,
   PACKING_SLIP_THANKS,
   formatPackingSlipDate,
   formatPackingSlipOrderHeading,
   formatPackingSlipQuantity,
+  buildPackingSlipFromLines,
   buildPackingSlipRecipientLines,
   buildPackingSlipShopFooter,
   resolvePackingSlipShopAddressLines,
 } from "./packing-slip-format";
 
-describe("packing slip format (Priya Sarees reference)", () => {
+describe("packing slip format (Priya Sarees)", () => {
   it("prints quantity as 1 of 1", () => {
     expect(formatPackingSlipQuantity(1)).toBe("1 of 1");
     expect(formatPackingSlipQuantity(3)).toBe("3 of 3");
@@ -51,33 +53,43 @@ describe("packing slip format (Priya Sarees reference)", () => {
     ]);
   });
 
-  it("omits phone on BILL TO", () => {
-    const lines = buildPackingSlipRecipientLines({
-      customerName: "Anshula Tayal",
-      customerMobile: "9654445244",
-      includePhone: false,
-      shippingAddress: {
-        line1: "C-410",
-        line2: null,
-        city: "New Delhi",
-        state: "Delhi",
-        postalCode: "110017",
-        country: "India",
-      },
-    });
-    expect(lines).not.toContain("9654445244");
-    expect(lines.at(-1)).toBe("India");
+  it("prints Priya shop address under FROM (not the customer)", () => {
+    const lines = buildPackingSlipFromLines(null, { includePhone: true });
+    expect(lines[0]).toBe(siteConfig.name);
+    expect(lines).toContain("355/1, Balaji Nagar Bedrapalii, Sipcot-1");
+    expect(lines).toContain("Hosur-635126");
+    expect(lines).toContain("Tamil Nadu");
+    expect(lines).toContain("India");
+    expect(lines).not.toContain("Anshula Tayal");
   });
 
-  it("prints shop footer as street, pincode city ST, country without shop mobile", () => {
+  it("uses admin shop-contact lines for FROM when provided", () => {
+    const lines = buildPackingSlipFromLines(
+      [
+        "12, Factory Road",
+        "Hosur-635109",
+        "Tamil Nadu",
+        "India",
+      ],
+      { includePhone: false },
+    );
+    expect(lines).toEqual([
+      siteConfig.name,
+      "12, Factory Road",
+      "Hosur-635109",
+      "Tamil Nadu",
+      "India",
+    ]);
+  });
+
+  it("prints shop footer from Priya site defaults", () => {
     const footer = buildPackingSlipShopFooter();
     expect(footer.brand).toBe(PACKING_SLIP_BRAND);
-    expect(footer.brand).toBe("Priya Sarees");
+    expect(footer.brand).toBe(siteConfig.name);
     expect(PACKING_SLIP_THANKS).toBe("Thank you for shopping with us!");
-    expect(footer.address).toBe(
-      "355/1, Balaji Nagar Bedrapalii, Sipcot-1, 635126 Hosur TN, India",
-    );
-    expect(footer.mobile).toBe("");
+    expect(footer.address).toContain("Balaji Nagar Bedrapalii");
+    expect(footer.address).toContain("Hosur");
+    expect(footer.address).toMatch(/India$/);
   });
 
   it("prints the admin shop-contact address on the packing slip footer", () => {
@@ -93,7 +105,9 @@ describe("packing slip format (Priya Sarees reference)", () => {
       },
     });
     const footer = buildPackingSlipShopFooter(lines);
-    expect(footer.address).toBe("12, Factory Road, 635109 Hosur TN, India");
+    expect(footer.address).toBe(
+      "12, Factory Road, Hosur-635109, Tamil Nadu, India",
+    );
   });
 
   it("falls back to the code address when admin shop contact is off", () => {

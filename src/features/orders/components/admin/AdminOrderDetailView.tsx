@@ -27,7 +27,12 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { formatOrderDateTimeIst } from "@/lib/datetime/india";
+import { adminOrderToPdfLabel } from "@/lib/pdf/admin-order-pdf-label";
 import { downloadAdminOrderPackingSlipPdf } from "@/lib/pdf/download-packing-slip.client";
+import {
+  downloadOrderPdf,
+  PdfAddressTooLongError,
+} from "@/lib/pdf/shipping-label-pdf";
 import { formatPrice } from "@/lib/utils";
 import type { OrderPaymentBreakdown } from "@/lib/orders/order-payment-breakdown";
 import { parseTrackingNumberFromBarcodeText } from "@/lib/dispatch/barcode-parsing";
@@ -136,6 +141,7 @@ export function AdminOrderDetailView({
 }: Props) {
   const { toast } = useToast();
   const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadingPackingSlip, setDownloadingPackingSlip] = useState(false);
   const [localPaymentStatus, setLocalPaymentStatus] = useState(
     order.paymentStatus,
   );
@@ -361,6 +367,37 @@ export function AdminOrderDetailView({
     if (downloadingPdf) return;
     setDownloadingPdf(true);
     try {
+      await downloadOrderPdf(
+        adminOrderToPdfLabel({
+          id: order.id,
+          copyAddressText,
+        }),
+      );
+      toast({
+        title: "PDF downloaded",
+        description: "Shipping label PDF saved to your downloads.",
+      });
+    } catch (error) {
+      const message =
+        error instanceof PdfAddressTooLongError
+          ? error.message
+          : error instanceof Error
+            ? error.message
+            : "Unknown error";
+      toast({
+        title: "Failed to generate PDF",
+        description: message,
+        variant: "destructive",
+      });
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
+
+  const downloadPackingSlip = async () => {
+    if (downloadingPackingSlip) return;
+    setDownloadingPackingSlip(true);
+    try {
       await downloadAdminOrderPackingSlipPdf({
         id: order.id,
         createdAt: order.createdAt,
@@ -378,18 +415,17 @@ export function AdminOrderDetailView({
         })),
       });
       toast({
-        title: "PDF downloaded",
-        description: "Packing slip saved to your downloads.",
+        title: "Packing slip downloaded",
+        description: "Packing slip PDF saved to your downloads.",
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
       toast({
-        title: "Failed to generate PDF",
-        description: message,
+        title: "Failed to generate packing slip",
+        description: error instanceof Error ? error.message : "Unknown error",
         variant: "destructive",
       });
     } finally {
-      setDownloadingPdf(false);
+      setDownloadingPackingSlip(false);
     }
   };
 
@@ -400,18 +436,33 @@ export function AdminOrderDetailView({
           <Link href="/admin/orders">Back to Orders</Link>
         </Button>
         {isPaid ? (
-          <Button
-            onClick={() => void downloadPdf()}
-            disabled={downloadingPdf}
-            title="Download packing slip PDF"
-          >
-            {downloadingPdf ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FileDown className="mr-2 h-4 w-4" />
-            )}
-            {downloadingPdf ? "Generating…" : "PDF"}
-          </Button>
+          <>
+            <Button
+              onClick={() => void downloadPdf()}
+              disabled={downloadingPdf}
+              title="Download shipping label PDF"
+            >
+              {downloadingPdf ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <FileDown className="mr-2 h-4 w-4" />
+              )}
+              {downloadingPdf ? "Generating…" : "Label PDF"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => void downloadPackingSlip()}
+              disabled={downloadingPackingSlip}
+              title="Download packing slip PDF"
+            >
+              {downloadingPackingSlip ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <FileDown className="mr-2 h-4 w-4" />
+              )}
+              {downloadingPackingSlip ? "Generating…" : "Packing slip"}
+            </Button>
+          </>
         ) : null}
         {canResyncRazorpay ? (
           <Button

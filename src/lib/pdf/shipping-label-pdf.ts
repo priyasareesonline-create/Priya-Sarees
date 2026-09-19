@@ -3,6 +3,8 @@ import { siteConfig } from "@/config/site";
 /** Minimal order shape for shipping-label PDFs (matches Software-Saree-order). */
 export type PdfLabelOrder = {
   id: string;
+  /** Kept for callers; not printed on the parcel label (use packing slip / admin UI). */
+  internalRef?: string | null;
   sender_details: string;
   recipient_details: string;
 };
@@ -90,7 +92,7 @@ export async function savePdfBlob(
 const DEFAULT_LOGO_PATHS = [
   "/logo.png",
   "/logo2.png",
-  "/images/priya-sarees-wordmark.svg",
+  "/images/priya-sarees-logo.png",
 ];
 let defaultLogoCache: string | null | undefined;
 
@@ -169,7 +171,8 @@ async function fetchPdfSettingsForRendering(): Promise<PdfRenderOptions> {
   };
 }
 
-// A4: 210mm x 297mm. Four sections per page for parcel labels. Fixed values = same output on all devices.
+// A4: 210mm x 297mm. Bulk PDFs pack up to 4 distinct labels per page.
+// Single-order download uses one label-tall page (SECTION_H), not 4 copies.
 const A4_W = 210;
 const A4_H = 297;
 const SECTIONS_PER_PAGE = 4;
@@ -726,7 +729,14 @@ type DocShape = {
     w: number,
     h: number,
   ) => void;
-  internal?: { write: (s: string) => void; scaleFactor: number };
+  internal?: {
+    write: (s: string) => void;
+    scaleFactor: number;
+    pageSize?: {
+      getHeight?: () => number;
+      height?: number;
+    };
+  };
 };
 
 /**
@@ -846,9 +856,13 @@ function drawOrderLabel(
 
     if (needsClip && doc.internal) {
       const k = doc.internal.scaleFactor;
+      const pageH =
+        doc.internal.pageSize?.getHeight?.() ??
+        doc.internal.pageSize?.height ??
+        A4_H;
       doc.internal.write("q");
       const rx = slotX * k;
-      const ry = (A4_H - slotY - LOGO_MAX_H_MM) * k;
+      const ry = (pageH - slotY - LOGO_MAX_H_MM) * k;
       const rw = LOGO_MAX_W_MM * k;
       const rh = LOGO_MAX_H_MM * k;
       doc.internal.write(
@@ -895,6 +909,7 @@ function drawSectionBorder(
     ) => void;
   },
   sectionTop: number,
+  opts?: { solidBottom?: boolean },
 ) {
   const left = MARGIN;
   const right = A4_W - MARGIN;
@@ -909,12 +924,17 @@ function drawSectionBorder(
   doc.line(left, sectionTop, right, sectionTop);
   doc.line(right, sectionTop, right, bottom);
 
-  // Dotted bottom line — "cut here" guide between orders
-  doc.setLineDashPattern([2, 2], 0);
-  doc.line(left, bottom, right, bottom);
-  doc.setLineDashPattern([], 0); // restore solid for subsequent drawings
+  // Last label / single-page: solid bottom. Mid-page slots: dotted cut guide.
+  if (opts?.solidBottom) {
+    doc.line(left, bottom, right, bottom);
+  } else {
+    doc.setLineDashPattern([2, 2], 0);
+    doc.line(left, bottom, right, bottom);
+    doc.setLineDashPattern([], 0);
+  }
 }
 
+/** One order → one label-sized page (not 4 copies on A4). */
 export async function downloadOrderPdf(order: PdfLabelOrder) {
   if (typeof window === "undefined") {
     console.warn("[PDF] downloadOrderPdf called in SSR context");
@@ -926,18 +946,17 @@ export async function downloadOrderPdf(order: PdfLabelOrder) {
     const renderOptions = await fetchPdfSettingsForRendering();
     console.log(`[PDF] Creating jsPDF document...`);
     const { jsPDF } = await import("jspdf");
-    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    // Page height = one label strip so print/PDF shows a single sticker, not blank A4.
+    const doc = new jsPDF({ unit: "mm", format: [A4_W, SECTION_H] });
     const d = doc as unknown as DocShape &
       Parameters<typeof drawSectionBorder>[0];
     const resolved = resolveOrderLabelLayout(d, order, renderOptions);
     console.log(
-      `[PDF] Drawing ${SECTIONS_PER_PAGE} sections (TO shift: ${resolved.toShiftMm}mm, font: ${resolved.addressSizePt}pt)...`,
+      `[PDF] Drawing 1 label (TO shift: ${resolved.toShiftMm}mm, font: ${resolved.addressSizePt}pt)...`,
     );
-    for (let i = 0; i < SECTIONS_PER_PAGE; i++) {
-      drawSectionBorder(d, i * SECTION_H);
-      drawOrderLabel(d, order, i * SECTION_H, renderOptions, resolved);
-    }
-    const filename = buildTimestampedFilename("SareeOrder");
+    drawSectionBorder(d, 0, { solidBottom: true });
+    drawOrderLabel(d, order, 0, renderOptions, resolved);
+    const filename = buildTimestampedFilename("Priya_Order");
     console.log(`[PDF] Generating blob for filename: ${filename}`);
     const blob = doc.output("blob");
     console.log(`[PDF] Blob generated, size: ${blob.size} bytes`);
@@ -955,6 +974,11 @@ export async function downloadOrdersPdf(orders: PdfLabelOrder[]) {
   }
   if (orders.length === 0) {
     console.warn("[PDF] downloadOrdersPdf called with empty orders array");
+    return;
+  }
+  // One paid order on the page → same single-label PDF as per-row download.
+  if (orders.length === 1) {
+    await downloadOrderPdf(orders[0]);
     return;
   }
   console.log(`[PDF] downloadOrdersPdf called for ${orders.length} orders`);
@@ -981,7 +1005,9 @@ export async function downloadOrdersPdf(orders: PdfLabelOrder[]) {
         doc.addPage([A4_W, A4_H], "p");
       }
       const sectionTop = slot * SECTION_H;
-      drawSectionBorder(d, sectionTop);
+      const isLastOnPage =
+        slot === SECTIONS_PER_PAGE - 1 || i === orders.length - 1;
+      drawSectionBorder(d, sectionTop, { solidBottom: isLastOnPage });
       drawOrderLabel(
         d,
         orders[i],
@@ -996,12 +1022,7 @@ export async function downloadOrdersPdf(orders: PdfLabelOrder[]) {
       }
     }
 
-    while (slot > 0 && slot < SECTIONS_PER_PAGE) {
-      drawSectionBorder(d, slot * SECTION_H);
-      slot++;
-    }
-
-    const filename = buildTimestampedFilename("SareeOrders");
+    const filename = buildTimestampedFilename("Priya_Orders");
     console.log(`[PDF] Generating blob for filename: ${filename}`);
     const blob = doc.output("blob");
     console.log(
@@ -1010,6 +1031,7 @@ export async function downloadOrdersPdf(orders: PdfLabelOrder[]) {
     await savePdfBlob(blob, filename);
   } catch (e) {
     console.error("[PDF] downloadOrdersPdf failed:", e);
-    throw e; // Re-throw so caller can handle
+    throw e;
   }
 }
+

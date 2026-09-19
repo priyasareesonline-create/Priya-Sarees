@@ -6,6 +6,11 @@ import {
   getProductSizeConfigsByProductIds,
   optionGroupDisplayNames,
 } from "@/lib/products/sizeConfig";
+import {
+  istDateRangeToUtcBounds,
+  resolveAdminOrdersDateFilters,
+  type AdminOrdersDateFilterState,
+} from "@/lib/admin/admin-orders-date-filter";
 import db from "@/lib/supabase/db";
 import {
   address,
@@ -15,7 +20,7 @@ import {
   products,
 } from "@/lib/supabase/schema";
 import { keytoUrl } from "@/lib/utils";
-import { desc, eq, inArray, sql, type SQL } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, lt, sql, type SQL } from "drizzle-orm";
 import {
   clampAdminOrdersPageSize,
   type AdminOrdersSegment,
@@ -65,6 +70,13 @@ export type AdminOrdersListParams = {
   segment: AdminOrdersSegment;
   page?: number;
   pageSize?: number;
+  /** IST calendar date filter; omitted / all = no createdAt bound. */
+  dateFilter?: AdminOrdersDateFilterState | null;
+  /**
+   * When the page already loaded segment counts, pass the matching total so we
+   * skip a duplicate COUNT(*) (saves a pooler round-trip on Vercel max:1).
+   */
+  totalCountHint?: number;
 };
 
 export type AdminOrdersListResult = {
@@ -91,6 +103,33 @@ function buildSegmentWhereClause(segment: AdminOrdersSegment): SQL {
   return sql`${orderStatus} <> 'cancelled' and (${orderStatus} = 'pending' or ${paymentStatus} in ('unpaid', 'pending', 'failed'))`;
 }
 
+function buildDateWhereClause(
+  dateFilter?: AdminOrdersDateFilterState | null,
+): SQL | null {
+  if (!dateFilter) return null;
+  const resolved = resolveAdminOrdersDateFilters(dateFilter);
+  if (resolved.allOrders || !resolved.fromDate || !resolved.toDate) return null;
+  const { startUtc, endExclusiveUtc } = istDateRangeToUtcBounds(
+    resolved.fromDate,
+    resolved.toDate,
+  );
+  return and(
+    gte(orders.createdAt, new Date(startUtc)),
+    lt(orders.createdAt, new Date(endExclusiveUtc)),
+  )!;
+}
+
+function combineWhere(
+  segment: AdminOrdersSegment,
+  dateFilter?: AdminOrdersDateFilterState | null,
+): SQL {
+  const segmentWhere = buildSegmentWhereClause(segment);
+  // Date window applies to paid list only (not unpaid/pending).
+  const dateWhere =
+    segment === "paid" ? buildDateWhereClause(dateFilter) : null;
+  return dateWhere ? and(segmentWhere, dateWhere)! : segmentWhere;
+}
+
 async function countOrders(where: SQL): Promise<number> {
   const rows = await db
     .select({ count: sql<number>`count(*)::int` })
@@ -99,19 +138,38 @@ async function countOrders(where: SQL): Promise<number> {
   return Number(rows[0]?.count ?? 0);
 }
 
-/** Counts for the summary cards — one aggregate round-trip, no row payloads. */
-export async function getAdminOrdersCounts(): Promise<{
+/** Counts for the summary cards — paid respects date window; pending is all-time. */
+export async function getAdminOrdersCounts(
+  dateFilter?: AdminOrdersDateFilterState | null,
+): Promise<{
   paid: number;
   pending: number;
 }> {
+  // One scan instead of two COUNT queries — critical on Vercel postgres.js max:1.
   const paymentStatus = sql`lower(trim(${orders.payment_status}))`;
   const orderStatus = sql`lower(trim(coalesce(${orders.order_status}, '')))`;
+  const paidPredicate = sql`${paymentStatus} in ('paid', 'success', 'captured')`;
+  const pendingPredicate = sql`${orderStatus} <> 'cancelled' and (${orderStatus} = 'pending' or ${paymentStatus} in ('unpaid', 'pending', 'failed'))`;
+
+  let paidFilter = paidPredicate;
+  if (dateFilter) {
+    const resolved = resolveAdminOrdersDateFilters(dateFilter);
+    if (!resolved.allOrders && resolved.fromDate && resolved.toDate) {
+      const { startUtc, endExclusiveUtc } = istDateRangeToUtcBounds(
+        resolved.fromDate,
+        resolved.toDate,
+      );
+      paidFilter = sql`${paidPredicate} and ${orders.createdAt} >= ${new Date(startUtc)} and ${orders.createdAt} < ${new Date(endExclusiveUtc)}`;
+    }
+  }
+
   const rows = await db
     .select({
-      paid: sql<number>`count(*) filter (where ${paymentStatus} in ('paid', 'success', 'captured'))::int`,
-      pending: sql<number>`count(*) filter (where ${orderStatus} <> 'cancelled' and (${orderStatus} = 'pending' or ${paymentStatus} in ('unpaid', 'pending', 'failed')))::int`,
+      paid: sql<number>`count(*) filter (where ${paidFilter})::int`,
+      pending: sql<number>`count(*) filter (where ${pendingPredicate})::int`,
     })
     .from(orders);
+
   return {
     paid: Number(rows[0]?.paid ?? 0),
     pending: Number(rows[0]?.pending ?? 0),
@@ -190,9 +248,14 @@ export async function getAdminOrdersList(
 ): Promise<AdminOrdersListResult> {
   const pageSize = clampAdminOrdersPageSize(params.pageSize);
   const requestedPage = Math.max(1, Math.round(params.page ?? 1));
-  const where = buildSegmentWhereClause(params.segment);
+  const where = combineWhere(params.segment, params.dateFilter);
 
-  const totalCount = await countOrders(where);
+  const totalCount =
+    typeof params.totalCountHint === "number" &&
+    Number.isFinite(params.totalCountHint) &&
+    params.totalCountHint >= 0
+      ? Math.floor(params.totalCountHint)
+      : await countOrders(where);
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const page = Math.min(requestedPage, totalPages);
   const offset = (page - 1) * pageSize;
