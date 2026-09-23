@@ -6,6 +6,7 @@ import React from "react";
 import { Card } from "../../../components/ui/card";
 
 import { cn, keytoUrl } from "@/lib/utils";
+import { getStorefrontImageProps } from "@/lib/media/image-optimization";
 import { useQuery } from "@urql/next";
 import { Icons } from "../../../components/layouts/icons";
 import { Skeleton } from "../../../components/ui/skeleton";
@@ -47,15 +48,17 @@ function ImagePreviewCard({ mediaId }: ImagePreviewCard) {
 
   if (data && data.mediasCollection.edges[0].node) {
     const media = data.mediasCollection.edges[0].node;
+    const src = keytoUrl(media.key);
     return (
       <Card className="group relative">
         <div className="relative">
           <Image
             className="group-hover:opacity-80 transition-all duration-200"
-            src={keytoUrl(media.key)}
+            src={src}
             alt={media.alt}
             width={120}
             height={120}
+            {...getStorefrontImageProps(src)}
           />
           <Icons.edit
             className={cn(

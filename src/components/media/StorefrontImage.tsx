@@ -7,10 +7,8 @@ import {
   cdnPresetForWidth,
   type CdnImageOptions,
 } from "@/lib/media/cdn-image";
-import {
-  getStorefrontImageProps,
-  STOREFRONT_IMAGE_FALLBACK,
-} from "@/lib/utils";
+import { getStorefrontImageProps } from "@/lib/media/image-optimization";
+import { STOREFRONT_IMAGE_FALLBACK } from "@/lib/utils";
 
 type Props = Omit<ImageProps, "onError" | "src"> & {
   src: string;

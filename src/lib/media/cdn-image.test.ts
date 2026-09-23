@@ -24,9 +24,9 @@ describe("cdn-image", () => {
     process.env.NEXT_PUBLIC_CDN_URL = prevCdn;
   });
 
-  it("defaults to cloudflare mode once CF CDN is validated", () => {
+  it("defaults to legacy until media CDN origin is wired", () => {
     delete process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE;
-    expect(getImageDeliveryMode()).toBe("cloudflare");
+    expect(getImageDeliveryMode()).toBe("legacy");
   });
 
   it("extracts keys from r2.dev URLs and raw keys", () => {
@@ -38,14 +38,20 @@ describe("cdn-image", () => {
       ),
     ).toBe("uploads/foo.webp");
     expect(extractMediaObjectKey("/images/local.svg")).toBeNull();
+    expect(extractMediaObjectKey("/api/r2/uploads/foo.webp")).toBe(
+      "uploads/foo.webp",
+    );
+    expect(
+      extractMediaObjectKey(
+        "https://priyasaree.com/api/r2/uploads/foo%2Fbar.webp",
+      ),
+    ).toBe("uploads/foo/bar.webp");
   });
 
   it("builds localhost:3000 /cdn resize URLs", () => {
     process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE = "cloudflare";
     const url = cdnImageUrl("uploads/upload-abc.png", CDN_PRESETS.card);
-    expect(url).toBe(
-      "/cdn/w=400,q=75,f=webp/uploads/upload-abc.png",
-    );
+    expect(url).toBe("/cdn/w=400,q=75,f=webp/uploads/upload-abc.png");
   });
 
   it("rewrites absolute r2 URLs", () => {
@@ -73,13 +79,8 @@ describe("cdn-image", () => {
 
   it("builds heroMobile LCP URLs at w=800,q=75", () => {
     process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE = "cloudflare";
-    const url = cdnImageUrl(
-      "uploads/upload-hero.png",
-      CDN_PRESETS.heroMobile,
-    );
-    expect(url).toBe(
-      "/cdn/w=800,q=75,f=webp/uploads/upload-hero.png",
-    );
+    const url = cdnImageUrl("uploads/upload-hero.png", CDN_PRESETS.heroMobile);
+    expect(url).toBe("/cdn/w=800,q=75,f=webp/uploads/upload-hero.png");
     expect(CDN_PRESETS.heroMobile).toEqual({
       width: 800,
       quality: 75,

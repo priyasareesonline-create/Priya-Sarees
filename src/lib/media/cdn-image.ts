@@ -43,9 +43,7 @@ export function getImageDeliveryMode(): ImageDeliveryMode {
   // Use legacy (raw R2) until NEXT_PUBLIC_MEDIA_CDN_ORIGIN points at the
   // Priya Sarees media worker. Set NEXT_PUBLIC_IMAGE_DELIVERY_MODE=cloudflare
   // after that worker is live.
-  const raw = String(
-    process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE ?? "legacy",
-  )
+  const raw = String(process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE ?? "legacy")
     .trim()
     .toLowerCase();
   return raw === "legacy" ? "legacy" : "cloudflare";
@@ -74,14 +72,29 @@ function cdnPublicBase(): string | null {
  * Extract an R2 object key from a storefront media URL or raw key.
  * Returns null for local assets / unknown hosts (leave as-is).
  */
+function keyFromApiR2Path(pathname: string): string | null {
+  if (!pathname.startsWith("/api/r2/")) return null;
+  const key = decodeURIComponent(pathname.slice("/api/r2/".length));
+  if (!key.startsWith("uploads/") || key.includes("..")) return null;
+  return key;
+}
+
 export function extractMediaObjectKey(keyOrUrl: string): string | null {
   const raw = keyOrUrl.trim();
   if (!raw || raw === FALLBACK) return null;
+
+  // App R2 proxy paths (used when CDN URL is private S3 API).
+  if (raw.startsWith("/api/r2/")) {
+    return keyFromApiR2Path(raw.split("?")[0] ?? raw);
+  }
+
   if (raw.startsWith("/")) return null;
 
   if (raw.startsWith("http://") || raw.startsWith("https://")) {
     try {
       const url = new URL(raw);
+      const fromProxy = keyFromApiR2Path(url.pathname);
+      if (fromProxy) return fromProxy;
       if (url.origin === mediaOrigin() && mediaOrigin()) {
         const m = url.pathname.match(/^\/cdn\/[^/]+\/(.+)$/);
         return m?.[1] ? decodeURIComponent(m[1]) : null;

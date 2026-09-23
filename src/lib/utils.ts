@@ -36,6 +36,10 @@ export function supabaseStoragePublicUrl(storagePath: string) {
 
 export function r2PublicUrl(key: string) {
   const normalized = key.replace(/^\//, "");
+  const encodedKey = normalized
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
   const base = env.NEXT_PUBLIC_CDN_URL.replace(/\/$/, "");
   // Private R2 S3 API host is not a public CDN — serve via app proxy instead.
   if (
@@ -43,28 +47,20 @@ export function r2PublicUrl(key: string) {
     base.includes("r2.cloudflarestorage.com") ||
     base.includes("amazonaws.com")
   ) {
-    return `/api/r2/${normalized}`;
+    return `/api/r2/${encodedKey}`;
   }
-  return `${base}/${normalized}`;
+  return `${base}/${encodedKey}`;
 }
 
 /** Local SVG if CDN key is missing or the remote file fails to load. */
 export const STOREFRONT_IMAGE_FALLBACK =
   "/images/priya-sarees-hero-festive.svg";
 
-/** OpenNext on Cloudflare serves `/_next/image` with attachment headers for remote URLs. */
-export function shouldBypassImageOptimization(src: string): boolean {
-  if (!src) return false;
-  // Local SVGs (e.g. Priya Sarees hero placeholders) skip the image optimizer.
-  if (src.startsWith("/") && /\.svg(?:$|\?)/i.test(src)) return true;
-  if (src.startsWith("/")) return false;
-  if (src.startsWith("http://") || src.startsWith("https://")) return true;
-  return false;
-}
-
-export function getStorefrontImageProps(src: string): { unoptimized?: true } {
-  return shouldBypassImageOptimization(src) ? { unoptimized: true } : {};
-}
+export {
+  getStorefrontImageProps,
+  isAppR2ProxySrc,
+  shouldBypassImageOptimization,
+} from "@/lib/media/image-optimization";
 
 import {
   DEFAULT_SAREE_PLACEHOLDER,

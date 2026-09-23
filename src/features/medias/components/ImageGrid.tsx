@@ -3,6 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { DocumentType, gql } from "@/gql";
 import { uploadFileIdentityKey } from "@/lib/admin/client-image-upload";
 import { cn, keytoUrl } from "@/lib/utils";
+import { getStorefrontImageProps } from "@/lib/media/image-optimization";
 import { FileWithPreview } from "@/types";
 import Image from "next/image";
 import { ReactNode } from "react";
@@ -51,6 +52,7 @@ function ImagesGrid({
             src={file.preview}
             alt={`Uploading ${file.name}`}
             className="h-[100px] w-[100px] object-cover"
+            unoptimized
           />
           <div className="absolute w-full h-full top-0 left-0 flex items-center justify-center">
             <Spinner />
@@ -58,7 +60,9 @@ function ImagesGrid({
         </div>
       ))}
 
-      {medias.map(({ node: media }) => (
+      {medias.map(({ node: media }) => {
+        const src = keytoUrl(media.key);
+        return (
         <button
           key={media.id}
           type="button"
@@ -71,16 +75,18 @@ function ImagesGrid({
           onClick={() => onClickHandler?.(media.id)}
         >
           <Image
-            src={keytoUrl(media.key)}
+            src={src}
             alt={media.alt}
             width={120}
             height={120}
             className={cn(
               "group-hover:opacity-30 transition-all duration-300 h-[120px] w-[120px] object-cover",
             )}
+            {...getStorefrontImageProps(src)}
           />
         </button>
-      ))}
+        );
+      })}
     </div>
   );
 }

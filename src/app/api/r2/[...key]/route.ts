@@ -7,11 +7,20 @@ export const dynamic = "force-dynamic";
 /** Only product/category uploads — never expose arbitrary bucket paths. */
 function sanitizePublicUploadKey(parts: string[]): string | null {
   if (!parts.length) return null;
-  const key = parts.map((p) => decodeURIComponent(p)).join("/");
+  const key = parts
+    .map((p) => {
+      try {
+        return decodeURIComponent(p);
+      } catch {
+        return p;
+      }
+    })
+    .join("/");
   if (!key.startsWith("uploads/")) return null;
   if (key.includes("..") || key.includes("\\") || key.includes("\0")) {
     return null;
   }
+  // nanoid / upload keys: letters, digits, _ . - and nested /
   if (!/^uploads\/[A-Za-z0-9._\-/]+$/.test(key)) return null;
   return key;
 }

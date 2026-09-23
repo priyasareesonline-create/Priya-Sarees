@@ -129,13 +129,28 @@ async function fetchImageAsJpeg(url: string): Promise<string | null> {
   }
 }
 
+function isAppR2ProxyUrl(url: string): boolean {
+  try {
+    if (url.includes("/api/r2/")) {
+      const path = url.startsWith("http")
+        ? new URL(url).pathname
+        : url.split("?")[0] ?? url;
+      return path.startsWith("/api/r2/");
+    }
+  } catch {
+    return false;
+  }
+  return false;
+}
+
 async function imageUrlToJpegDataUrl(url: string): Promise<string | null> {
   if (typeof window === "undefined" || !url) return null;
   if (url === FALLBACK_IMAGE || url.toLowerCase().endsWith(".svg")) return null;
   const abs = absoluteImageUrl(url);
   const direct = await fetchImageAsJpeg(abs);
   if (direct) return direct;
-  if (abs.startsWith("http")) {
+  // CF breaks /_next/image?url=/api/r2/... — never fall back to the optimizer for proxy URLs.
+  if (abs.startsWith("http") && !isAppR2ProxyUrl(abs)) {
     return fetchImageAsJpeg(nextImageProxyUrl(abs));
   }
   return null;
