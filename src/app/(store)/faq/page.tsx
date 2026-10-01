@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: "Can I visit your store?",
-    a: "Yes. We are in Balaji Nagar, Sipcot-1, Hosur. See our Contact page for the full address.",
+    a: "Yes. We are in Magudanchavadi, near Elampillai, Salem. See our Contact page for the full address.",
   },
   {
     q: "What do you sell?",

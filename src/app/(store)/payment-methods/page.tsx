@@ -32,9 +32,8 @@ export default function PaymentMethodsPage() {
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">In-store</h2>
         <p>
-          Visit us at our Hosur store ({siteConfig.address}) to pay by cash,
-          UPI, or card. Our team can help you choose sarees and
-          festive weaves.
+          Visit us at our Elampillai store ({siteConfig.address}) to pay by cash,
+          UPI, or card. Our team can help you choose sarees and festive weaves.
         </p>
       </section>
 

@@ -4,8 +4,8 @@ export type SiteConfig = typeof siteConfig;
 
 /** Priya Sarees storefront */
 const ADDRESS_LINES = [
-  "355/1, Balaji Nagar Bedrapalii, Sipcot-1",
-  "Hosur-635126",
+  "6/64, Mettu Street, Magudanchavadi Post",
+  "Sankagiri Taluk, Salem-637103",
   "Tamil Nadu",
   "India",
 ] as const;
@@ -30,11 +30,13 @@ export const siteConfig = {
   name: "Priya Sarees",
   shortName: "Priya",
   tagline: "Silk, cotton & wedding sarees",
-  location: "Hosur, Tamil Nadu",
+  location: "Elampillai, Salem, Tamil Nadu",
   description:
     "Priya Sarees — silk, cotton, wedding and festive sarees with secure checkout and delivery across India.",
   searchPlaceholder: "Search sarees…",
-  url: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    "http://localhost:3000",
   addressLines: ADDRESS_LINES,
   address: ADDRESS_LINES.join(", "),
   phone: "",

@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `Our Story | ${siteConfig.name}`,
-  description: `About ${siteConfig.name} — silk, cotton and wedding sarees from Hosur, Tamil Nadu.`,
+  description: `About ${siteConfig.name} — silk, cotton and wedding sarees from Elampillai, Salem, Tamil Nadu.`,
 };
 
 export default function AboutPage() {
@@ -16,11 +16,9 @@ export default function AboutPage() {
       heading="Our Story"
       description={`${siteConfig.name} — ${siteConfig.tagline}.`}
     >
+      <p>{siteConfig.name} offers silk, cotton, wedding and festive sarees.</p>
       <p>
-        {siteConfig.name} offers silk, cotton, wedding and festive sarees.
-      </p>
-      <p>
-        Based in Hosur, Tamil Nadu. Visit us at {siteConfig.address}
+        Based in Elampillai, Salem, Tamil Nadu. Visit us at {siteConfig.address}
         {siteConfig.email ? (
           <>
             , or email{" "}

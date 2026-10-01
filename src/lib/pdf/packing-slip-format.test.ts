@@ -56,8 +56,8 @@ describe("packing slip format (Priya Sarees)", () => {
   it("prints Priya shop address under FROM (not the customer)", () => {
     const lines = buildPackingSlipFromLines(null, { includePhone: true });
     expect(lines[0]).toBe(siteConfig.name);
-    expect(lines).toContain("355/1, Balaji Nagar Bedrapalii, Sipcot-1");
-    expect(lines).toContain("Hosur-635126");
+    expect(lines).toContain("6/64, Mettu Street, Magudanchavadi Post");
+    expect(lines).toContain("Sankagiri Taluk, Salem-637103");
     expect(lines).toContain("Tamil Nadu");
     expect(lines).toContain("India");
     expect(lines).not.toContain("Anshula Tayal");
@@ -65,12 +65,7 @@ describe("packing slip format (Priya Sarees)", () => {
 
   it("uses admin shop-contact lines for FROM when provided", () => {
     const lines = buildPackingSlipFromLines(
-      [
-        "12, Factory Road",
-        "Hosur-635109",
-        "Tamil Nadu",
-        "India",
-      ],
+      ["12, Factory Road", "Hosur-635109", "Tamil Nadu", "India"],
       { includePhone: false },
     );
     expect(lines).toEqual([
@@ -87,8 +82,8 @@ describe("packing slip format (Priya Sarees)", () => {
     expect(footer.brand).toBe(PACKING_SLIP_BRAND);
     expect(footer.brand).toBe(siteConfig.name);
     expect(PACKING_SLIP_THANKS).toBe("Thank you for shopping with us!");
-    expect(footer.address).toContain("Balaji Nagar Bedrapalii");
-    expect(footer.address).toContain("Hosur");
+    expect(footer.address).toContain("Magudanchavadi Post");
+    expect(footer.address).toContain("Salem-637103");
     expect(footer.address).toMatch(/India$/);
   });
 
@@ -116,7 +111,7 @@ describe("packing slip format (Priya Sarees)", () => {
       value: { addressLines: ["Should not print"] },
     });
     expect(buildPackingSlipShopFooter(lines).address).toContain(
-      "Balaji Nagar Bedrapalii",
+      "Magudanchavadi Post",
     );
   });
 });

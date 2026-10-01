@@ -6,7 +6,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact | Priya Sarees",
-  description: "Contact Priya Sarees by email, or visit our store in Hosur, Tamil Nadu",
+  description:
+    "Contact Priya Sarees by email, or visit our store in Elampillai, Salem, Tamil Nadu",
 };
 
 export const revalidate = 60;
@@ -18,7 +19,7 @@ export default async function ContactPage() {
   return (
     <InfoPage
       heading="Contact Us"
-      description="Reach Priya Sarees by email, or visit our store in Hosur."
+      description="Reach Priya Sarees by email, or visit our store in Elampillai, Salem."
     >
       <section id="store" className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">

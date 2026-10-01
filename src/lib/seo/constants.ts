@@ -87,7 +87,7 @@ export const SEO_PRIMARY_NAV = [
   {
     name: "Contact us",
     href: "/contact",
-    description: "Visit our Hosur store or message us for orders.",
+    description: "Visit our Elampillai store or message us for orders.",
   },
   {
     name: "Terms & Conditions",

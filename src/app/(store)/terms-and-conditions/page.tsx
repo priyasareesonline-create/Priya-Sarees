@@ -9,7 +9,8 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Terms & Conditions | Priya Sarees",
-  description: "Terms and Conditions and Terms of Use for shopping at Priya Sarees.",
+  description:
+    "Terms and Conditions and Terms of Use for shopping at Priya Sarees.",
   alternates: {
     canonical: "/terms-and-conditions",
   },
@@ -39,9 +40,8 @@ export default async function TermsAndConditionsPage() {
           <Link href="/" className="text-primary hover:underline">
             {siteConfig.url.replace(/^https:\/\//, "")}
           </Link>{" "}
-          operated by {businessName}, a saree merchant based in
-          Hosur, Tamil Nadu, India (&quot;we&quot;, &quot;us&quot;,
-          &quot;our&quot;).
+          operated by {businessName}, a saree merchant based in Elampillai,
+          Salem, Tamil Nadu, India (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;).
         </p>
         <p>
           By browsing this website, creating an account, or placing an order,
