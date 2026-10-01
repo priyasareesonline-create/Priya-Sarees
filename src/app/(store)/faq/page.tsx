@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     q: "How do returns work?",
-    a: "Unused items in original condition may be returned within 7 days. Please read our Shipping & Returns page and contact us before sending anything back.",
+    a: "Unused items in original condition may be returned within 7 days. An unboxing video is required for any damage or wrong-item claim. Please read our Shipping & Returns page and contact us before sending anything back.",
   },
 ];
 

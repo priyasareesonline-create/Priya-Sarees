@@ -1,12 +1,6 @@
 import { Suspense } from "react";
 import Header from "@/components/layouts/Header";
 import { Shell } from "@/components/layouts/Shell";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { AddProductToCartForm } from "@/features/carts";
 import {
   BuyNowButton,
@@ -48,6 +42,13 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductMobileStickyBuyBar } from "@/features/products/components/ProductMobileStickyBuyBar";
+import { ProductInfoRows } from "@/features/products/components/ProductInfoRows";
+import {
+  getShortDescription,
+  hasMoreThanShortDescription,
+} from "@/lib/products/short-description";
+import { getDeliveryEstimate } from "@/lib/datetime/delivery-estimate";
+import { getCanonicalSiteOrigin } from "@/lib/auth/site-urls";
 
 export const revalidate = 120;
 
@@ -184,6 +185,21 @@ async function ProductDetailPage({ params }: Props) {
       ? "Available options"
       : `Available ${optionName.toLowerCase()}`;
 
+  const shortDescription = getShortDescription(description);
+  const showFullDescription = hasMoreThanShortDescription(description);
+  const siteOrigin = getCanonicalSiteOrigin().replace(/\/$/, "");
+  const productUrl = `${siteOrigin}/shop/${productSlug}`;
+  const featuredImageUrl = featuredImage?.key
+    ? keytoUrl(featuredImage.key)
+    : null;
+  const shareImageUrl = featuredImageUrl
+    ? featuredImageUrl.startsWith("/")
+      ? `${siteOrigin}${featuredImageUrl}`
+      : featuredImageUrl
+    : null;
+  const isOutOfStock =
+    !hasConfiguredSizes && typeof stock === "number" && stock <= 0;
+
   const courierConfig = await resolveCourierChargesConfig();
   const jsonLdPrice = toGstInclusiveAmount(
     getEffectiveProductPrice(displayPricing),
@@ -226,6 +242,11 @@ async function ProductDetailPage({ params }: Props) {
               <h1 className="mb-2 text-2xl font-semibold tracking-wide sm:mb-3 sm:text-3xl md:text-4xl">
                 {name}
               </h1>
+              {shortDescription ? (
+                <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  {shortDescription}
+                </p>
+              ) : null}
               {!hasConfiguredSizes ? (
                 <>
                   <ProductPriceDisplay
@@ -269,10 +290,15 @@ async function ProductDetailPage({ params }: Props) {
             <AddToWishListButton productId={id} />
           </section>
 
-          <section
-            id="product-buy-box"
-            className="mb-8 scroll-mt-28 space-y-5"
-          >
+          <ProductInfoRows
+            productName={name}
+            productUrl={productUrl}
+            imageUrl={shareImageUrl}
+            initialDeliveryLabel={getDeliveryEstimate().label}
+            showDelivery={!isDigital && !isOutOfStock}
+          />
+
+          <section id="product-buy-box" className="mb-8 scroll-mt-28 space-y-5">
             <Suspense>
               {hasConfiguredSizes ? (
                 <ProductBuyBox
@@ -304,7 +330,7 @@ async function ProductDetailPage({ params }: Props) {
           />
 
           <section className="space-y-6 pb-[calc(var(--mobile-nav-height)+5rem)] md:pb-0">
-            {description?.trim() ? (
+            {showFullDescription && description?.trim() ? (
               <div>
                 <h2 className="text-lg font-semibold tracking-wide mb-3">
                   About this product
@@ -314,18 +340,6 @@ async function ProductDetailPage({ params }: Props) {
                 </p>
               </div>
             ) : null}
-
-            <Accordion type="single" collapsible>
-              <AccordionItem value="shipping-returns">
-                <AccordionTrigger>Ship & Returns</AccordionTrigger>
-                <AccordionContent>
-                  Shipping across Tamil Nadu and India. Free delivery on
-                  selected orders — email us for details. Returns or exchanges
-                  may be accepted within 7 days for unused items with packaging;
-                  please email before returning.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
           </section>
         </div>
       </div>

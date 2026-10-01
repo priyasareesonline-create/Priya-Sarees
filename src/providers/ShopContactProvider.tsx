@@ -1,14 +1,11 @@
 "use client";
 
 import { siteConfig } from "@/config/site";
-import {
-  buildPhoneHref,
-  hideShopPhoneOnStorefront,
-} from "@/lib/admin/shop-contact";
+import { buildPhoneHref } from "@/lib/admin/shop-contact";
 import type { ResolvedShopContact } from "@/lib/admin/shop-contact";
 import { createContext, useContext, type ReactNode } from "react";
 
-const defaultContact: ResolvedShopContact = hideShopPhoneOnStorefront({
+const defaultContact: ResolvedShopContact = {
   addressLines: siteConfig.addressLines,
   address: siteConfig.address,
   gstin: siteConfig.gstin,
@@ -19,7 +16,7 @@ const defaultContact: ResolvedShopContact = hideShopPhoneOnStorefront({
   })),
   phone: siteConfig.phone,
   phoneHref: siteConfig.phoneHref || buildPhoneHref(siteConfig.phone),
-});
+};
 
 const ShopContactContext = createContext<ResolvedShopContact>(defaultContact);
 

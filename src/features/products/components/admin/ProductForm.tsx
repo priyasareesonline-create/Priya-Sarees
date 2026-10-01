@@ -1353,7 +1353,8 @@ function ProductFrom({ product, galleryMediaIds = [] }: ProductsFormProps) {
             </FormControl>
             <FormDescription>
               Shown on the product page, just like category descriptions on
-              collection pages. Write a clear customer-facing paragraph.
+              collection pages. Write a clear customer-facing paragraph. The
+              first line shows under the product title.
             </FormDescription>
             <FormMessage />
           </FormItem>

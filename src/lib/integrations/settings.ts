@@ -21,7 +21,6 @@ import type {
   StorefrontAnnouncement,
 } from "@/lib/announcements/types";
 import {
-  hideShopPhoneOnStorefront,
   resolveShopContact,
   type ResolvedShopContact,
   type ShopContactPayload,
@@ -73,16 +72,15 @@ export type ResolvedStorefrontSocial = {
   whatsapp: string;
 };
 
-const defaultShopContact = (): ResolvedShopContact =>
-  hideShopPhoneOnStorefront({
-    addressLines: siteConfig.addressLines,
-    address: siteConfig.address,
-    gstin: siteConfig.gstin,
-    email: siteConfig.email,
-    contacts: siteConfig.contacts,
-    phone: siteConfig.phone,
-    phoneHref: siteConfig.phoneHref,
-  });
+const defaultShopContact = (): ResolvedShopContact => ({
+  addressLines: siteConfig.addressLines,
+  address: siteConfig.address,
+  gstin: siteConfig.gstin,
+  email: siteConfig.email,
+  contacts: siteConfig.contacts,
+  phone: siteConfig.phone,
+  phoneHref: siteConfig.phoneHref,
+});
 
 /** Merges admin-managed contact over site defaults for the whole storefront. */
 export async function resolveStorefrontContact(): Promise<ResolvedShopContact> {

@@ -83,7 +83,10 @@ export default async function ShippingReturnsPage() {
         </p>
         <ul className="list-disc space-y-1 pl-5">
           <li>Please email us before sending any item back.</li>
-          <li>Customised, opened, or used craft kits cannot be returned.</li>
+          <li>
+            An unboxing video is required for any damage or wrong-item claim.
+          </li>
+          <li>Used, washed, or altered sarees cannot be returned.</li>
           <li>
             Shipping charges for returns may apply unless the item is faulty.
           </li>
