@@ -8,7 +8,8 @@ import {
   indiaCalendarDate,
 } from "./delivery-estimate";
 
-const utc = (y: number, m: number, d: number) => new Date(Date.UTC(y, m - 1, d));
+const utc = (y: number, m: number, d: number) =>
+  new Date(Date.UTC(y, m - 1, d));
 
 describe("delivery-estimate", () => {
   it("derives working days from the shared shipping copy", () => {

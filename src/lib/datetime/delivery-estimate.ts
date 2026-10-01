@@ -64,6 +64,8 @@ export function getDeliveryEstimate(now: Date = new Date()): DeliveryEstimate {
   const from = formatDeliveryDay(
     addWorkingDays(today, DELIVERY_WORKING_DAYS.min),
   );
-  const to = formatDeliveryDay(addWorkingDays(today, DELIVERY_WORKING_DAYS.max));
+  const to = formatDeliveryDay(
+    addWorkingDays(today, DELIVERY_WORKING_DAYS.max),
+  );
   return { from, to, label: `${from} – ${to}` };
 }
