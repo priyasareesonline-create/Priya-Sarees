@@ -16,6 +16,8 @@ import { getProductPackLabelsByIds } from "@/lib/products/pack.server";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { CDN_PRESETS, cdnImageUrl } from "@/lib/media/cdn-image";
+import { buildSocialImages } from "@/lib/seo/social-image";
+import { ORDER_RETURNS } from "@/lib/storefront/order-shipping";
 import type { Metadata } from "next";
 
 const HomePriceCarousel = dynamic(() =>
@@ -36,6 +38,8 @@ const HomeTestimonialsCarousel = dynamic(() =>
 
 export const revalidate = 120;
 
+const homeSocial = buildSocialImages(null, "Priya Sarees");
+
 export const metadata: Metadata = {
   title: "Silk, cotton & wedding sarees",
   description:
@@ -48,6 +52,13 @@ export const metadata: Metadata = {
     description:
       "Shop silk, cotton, wedding and festive sarees at Priya Sarees.",
     url: "/",
+    ...homeSocial.openGraph,
+  },
+  twitter: {
+    ...homeSocial.twitter,
+    title: "Priya Sarees | Silk, cotton & wedding sarees",
+    description:
+      "Shop silk, cotton, wedding and festive sarees at Priya Sarees.",
   },
 };
 
@@ -180,8 +191,8 @@ function TrustFeatures() {
     },
     {
       Icon: Icons.tag,
-      title: "Easy Replacement",
-      description: "Simple returns on eligible items.",
+      title: ORDER_RETURNS.badgeTitle,
+      description: ORDER_RETURNS.badgeDescription,
       iconClass: "text-brand-rose",
     },
     {
@@ -199,7 +210,7 @@ function TrustFeatures() {
           <div className="mb-3 flex justify-center">
             <span
               className={cn(
-                "inline-flex h-12 w-12 items-center justify-center rounded-full bg-card shadow-[0_8px_24px_-12px_rgba(192,48,120,0.35)] ring-1 ring-brand-rose/15",
+                "inline-flex h-12 w-12 items-center justify-center rounded-full bg-card shadow-[0_8px_24px_-12px_rgba(155,27,46,0.35)] ring-1 ring-brand-rose/15",
               )}
             >
               <Icon className={cn("h-6 w-6", iconClass)} />

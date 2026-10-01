@@ -29,6 +29,22 @@ export const ORDER_SHIPPING = {
   contactEmail: "Email",
 } as const;
 
+export const ORDER_RETURNS = {
+  title: "Returns & exchanges",
+  windowDays: 7,
+  summary:
+    "Returns or exchanges may be accepted within 7 days of delivery for unused items with original packaging intact.",
+  badgeTitle: "7-Day Returns",
+  badgeDescription: "Unboxing video needed for damage or wrong-item claims.",
+  rules: [
+    "Please email us before sending any item back.",
+    "An unboxing video is required for any damage or wrong-item claim.",
+    "Used, washed, or altered sarees cannot be returned.",
+    "Shipping charges for returns may apply unless the item is faulty.",
+  ],
+  fullDetailsHref: "/shipping-returns",
+} as const;
+
 export const ORDER_SHIPPING_FALLBACK = {
   email: "",
 } as const;

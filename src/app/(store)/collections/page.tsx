@@ -2,9 +2,12 @@ import Header from "@/components/layouts/Header";
 import { Shell } from "@/components/layouts/Shell";
 import CollectionsCard from "@/features/collections/components/CollectionsCard";
 import { getAllCollectionsCached } from "@/lib/storefront/collections-list";
+import { buildSocialImages } from "@/lib/seo/social-image";
 import { Metadata } from "next";
 
 export const revalidate = 300;
+
+const collectionsSocial = buildSocialImages(null, "Priya Sarees");
 
 export const metadata: Metadata = {
   title: "All Collections",
@@ -15,8 +18,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "All Collections | Priya Sarees",
-    description: "Browse silk, cotton, wedding and festive collections at Priya Sarees.",
+    description:
+      "Browse silk, cotton, wedding and festive collections at Priya Sarees.",
     url: "/collections",
+    ...collectionsSocial.openGraph,
+  },
+  twitter: {
+    ...collectionsSocial.twitter,
+    title: "All Collections | Priya Sarees",
+    description:
+      "Browse silk, cotton, wedding and festive collections at Priya Sarees.",
   },
 };
 

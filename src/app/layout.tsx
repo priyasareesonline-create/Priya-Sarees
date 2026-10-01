@@ -3,10 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
 import { brandSans, heroSerif } from "@/lib/fonts";
-import {
-  SOCIAL_IMAGE_FALLBACK_PATH,
-  absoluteSocialFallbackUrl,
-} from "@/lib/seo/social-image";
+import { absoluteSocialFallbackUrl } from "@/lib/seo/social-image";
 import { getURL } from "@/lib/utils";
 import CustomProvider from "../providers/CustomProvider";
 import { MicrosoftClarity } from "@/components/analytics/MicrosoftClarity";
@@ -29,7 +26,8 @@ export const metadata: Metadata = {
     "cotton sarees",
     "wedding sarees",
     "festive sarees",
-    "Hosur sarees",
+    "Elampillai sarees",
+    "Salem sarees",
     "Tamil Nadu sarees",
   ],
   applicationName: siteConfig.name,
@@ -50,7 +48,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: SOCIAL_IMAGE_FALLBACK_PATH,
+        url: defaultSocialImageUrl,
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -78,9 +76,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   icons: {
-    icon: [{ url: "/images/priya-sarees-wordmark.svg", type: "image/svg+xml" }],
-    shortcut: ["/images/priya-sarees-wordmark.svg"],
-    apple: [{ url: "/images/priya-sarees-wordmark.svg", type: "image/svg+xml" }],
+    icon: [{ url: "/images/priya-sarees-logo.png", type: "image/png" }],
+    shortcut: ["/images/priya-sarees-logo.png"],
+    apple: [{ url: "/images/priya-sarees-logo.png", type: "image/png" }],
   },
 };
 
@@ -88,7 +86,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#18181b",
+  themeColor: "#9B1B2E",
 };
 
 export default function RootLayout({

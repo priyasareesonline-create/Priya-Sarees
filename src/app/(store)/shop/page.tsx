@@ -22,10 +22,13 @@ import {
   buildShopSearchVariables,
   formatShopPriceRangeHeading,
 } from "@/lib/storefront/search-params";
+import { buildSocialImages } from "@/lib/seo/social-image";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 export const revalidate = 120;
+
+const shopSocial = buildSocialImages(null, "Priya Sarees");
 
 export const metadata: Metadata = {
   title: "Shop All Products",
@@ -39,6 +42,13 @@ export const metadata: Metadata = {
     description:
       "Browse all silk, cotton, wedding and festive sarees at Priya Sarees.",
     url: "/shop",
+    ...shopSocial.openGraph,
+  },
+  twitter: {
+    ...shopSocial.twitter,
+    title: "Shop All Products | Priya Sarees",
+    description:
+      "Browse all silk, cotton, wedding and festive sarees at Priya Sarees.",
   },
 };
 

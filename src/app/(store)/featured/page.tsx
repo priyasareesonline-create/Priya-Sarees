@@ -11,8 +11,11 @@ import { getDraftProductIdsSafe } from "@/lib/storefront/draft-product-ids";
 import { fetchFeaturedProductsCached } from "@/lib/storefront/product-queries";
 import { getProductPackLabelsByIds } from "@/lib/products/pack.server";
 import { getProductSizePreviewsByIds } from "@/lib/products/sizeConfig";
+import { buildSocialImages } from "@/lib/seo/social-image";
 
 export const revalidate = 120;
+
+const featuredSocial = buildSocialImages(null, "Priya Sarees");
 
 export const metadata: Metadata = {
   title: "Featured Products",
@@ -26,6 +29,13 @@ export const metadata: Metadata = {
     description:
       "Discover handpicked featured sarees at Priya Sarees for weddings and festivals.",
     url: "/featured",
+    ...featuredSocial.openGraph,
+  },
+  twitter: {
+    ...featuredSocial.twitter,
+    title: "Featured Products | Priya Sarees",
+    description:
+      "Discover handpicked featured sarees at Priya Sarees for weddings and festivals.",
   },
 };
 

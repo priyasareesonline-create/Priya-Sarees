@@ -1,14 +1,20 @@
-import React from "react";
+import Link from "next/link";
+import { ORDER_RETURNS, ORDER_SHIPPING } from "@/lib/storefront/order-shipping";
 
-type Props = {};
-
-function ShipReturns({}: Props) {
+function ShipReturns() {
   return (
-    <div>
-      Shipping & Returns Spend $80 to receive free shipping for a limited time.
-      Oversized items require additional handling fees. Learn more Except for
-      furniture, innerwear, and food, merchandise can be returned or exchanged
-      within 30 days of delivery. Learn more
+    <div className="space-y-2 text-sm text-muted-foreground">
+      <p>
+        {ORDER_SHIPPING.processingLabel}: {ORDER_SHIPPING.processing}.{" "}
+        {ORDER_SHIPPING.tracking}
+      </p>
+      <p>{ORDER_RETURNS.summary}</p>
+      <Link
+        href={ORDER_RETURNS.fullDetailsHref}
+        className="text-primary hover:underline"
+      >
+        {ORDER_SHIPPING.fullDetailsLabel}
+      </Link>
     </div>
   );
 }
