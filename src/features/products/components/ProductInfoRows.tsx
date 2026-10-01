@@ -138,14 +138,30 @@ export function ProductInfoRows({
       ) : null}
 
       <div className="flex flex-wrap items-center gap-x-1 gap-y-1 py-2">
-        <span className="mr-1 inline-flex items-center gap-3 text-foreground">
-          <Share2
-            className="h-5 w-5 shrink-0 text-foreground/70"
-            strokeWidth={1.75}
-            aria-hidden
-          />
-          Share
-        </span>
+        {canNativeShare ? (
+          <button
+            type="button"
+            onClick={handleNativeShare}
+            aria-label="Share using your phone"
+            className="mr-1 inline-flex min-h-10 items-center gap-3 rounded-full text-foreground touch-manipulation hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
+            <Share2
+              className="h-5 w-5 shrink-0 text-foreground/70"
+              strokeWidth={1.75}
+              aria-hidden
+            />
+            Share
+          </button>
+        ) : (
+          <span className="mr-1 inline-flex min-h-10 items-center gap-3 text-foreground">
+            <Share2
+              className="h-5 w-5 shrink-0 text-foreground/70"
+              strokeWidth={1.75}
+              aria-hidden
+            />
+            Share
+          </span>
+        )}
         {shareLinks.map((link) => (
           <a
             key={link.label}
@@ -172,15 +188,6 @@ export function ProductInfoRows({
             <Link2 className="h-[18px] w-[18px]" strokeWidth={1.75} />
           )}
         </button>
-        {canNativeShare ? (
-          <button
-            type="button"
-            onClick={handleNativeShare}
-            className="ml-auto inline-flex h-10 items-center rounded-full border border-border px-4 text-xs font-semibold text-foreground transition-colors hover:bg-muted touch-manipulation md:hidden"
-          >
-            More
-          </button>
-        ) : null}
       </div>
       {copied ? (
         <p className="sr-only" role="status">
