@@ -23,9 +23,9 @@ export default function PaymentMethodsPage() {
         </h2>
         <p>
           When you checkout on our website, you can pay securely using UPI,
-          major debit and credit cards, and net banking through our payment
-          partners (Razorpay, Cashfree, or PhonePe). All transactions are
-          processed in <strong>Indian Rupees (INR)</strong>.
+          Visa, Mastercard and RuPay debit or credit cards, and net banking
+          through our payment partner Cashfree. All transactions are processed
+          in <strong>Indian Rupees (INR)</strong>.
         </p>
       </section>
 

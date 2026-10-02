@@ -42,6 +42,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductInfoRows } from "@/features/products/components/ProductInfoRows";
+import { SafeCheckoutBadges } from "@/features/products/components/SafeCheckoutBadges";
 import {
   getShortDescription,
   hasMoreThanShortDescription,
@@ -296,6 +297,8 @@ async function ProductDetailPage({ params }: Props) {
             initialDeliveryLabel={getDeliveryEstimate().label}
             showDelivery={!isDigital && !isOutOfStock}
           />
+
+          {!isOutOfStock ? <SafeCheckoutBadges /> : null}
 
           <section id="product-buy-box" className="mb-8 scroll-mt-28 space-y-5">
             <Suspense>
