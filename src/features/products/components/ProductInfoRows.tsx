@@ -40,7 +40,7 @@ async function copyText(text: string): Promise<boolean> {
 }
 
 const shareIconClass =
-  "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 touch-manipulation";
+  "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 touch-manipulation";
 
 export function ProductInfoRows({
   productName,
@@ -85,29 +85,31 @@ export function ProductInfoRows({
     {
       label: "WhatsApp",
       href: `https://wa.me/?text=${encodeURIComponent(`${productName} ${productUrl}`)}`,
-      icon: <Icons.whatsapp className="h-[18px] w-[18px]" />,
+      icon: <Icons.whatsapp className="h-5 w-5 text-[#25D366]" />,
     },
     {
       label: "Facebook",
       href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      icon: <Icons.facebook className="h-[18px] w-[18px]" />,
+      icon: <Icons.facebook className="h-5 w-5 text-[#1877F2]" />,
     },
     {
       label: "X",
       href: `https://x.com/intent/post?url=${url}&text=${text}`,
-      icon: <Icons.x className="h-4 w-4" />,
+      icon: <Icons.x className="h-[18px] w-[18px] text-black dark:text-white" />,
     },
     {
       label: "Pinterest",
       href: `https://pinterest.com/pin/create/button/?url=${url}&description=${text}${
         imageUrl ? `&media=${encodeURIComponent(imageUrl)}` : ""
       }`,
-      icon: <Icons.pinterest className="h-[18px] w-[18px]" />,
+      icon: <Icons.pinterest className="h-5 w-5 text-[#E60023]" />,
     },
     {
       label: "Email",
       href: `mailto:?subject=${text}&body=${url}`,
-      icon: <Mail className="h-[18px] w-[18px]" strokeWidth={1.75} />,
+      icon: (
+        <Mail className="h-5 w-5 text-[#EA4335]" strokeWidth={1.75} />
+      ),
     },
   ];
 
@@ -180,12 +182,12 @@ export function ProductInfoRows({
           onClick={handleCopy}
           aria-label={copied ? "Link copied" : "Copy link"}
           title={copied ? "Copied" : "Copy link"}
-          className={cn(shareIconClass, copied && "text-primary")}
+          className={cn(shareIconClass, "text-primary")}
         >
           {copied ? (
-            <Check className="h-[18px] w-[18px]" strokeWidth={2} />
+            <Check className="h-5 w-5 text-[#25D366]" strokeWidth={2} />
           ) : (
-            <Link2 className="h-[18px] w-[18px]" strokeWidth={1.75} />
+            <Link2 className="h-5 w-5" strokeWidth={1.75} />
           )}
         </button>
       </div>

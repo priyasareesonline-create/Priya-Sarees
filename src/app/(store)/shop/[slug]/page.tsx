@@ -41,7 +41,6 @@ import { keytoUrl } from "@/lib/utils";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductMobileStickyBuyBar } from "@/features/products/components/ProductMobileStickyBuyBar";
 import { ProductInfoRows } from "@/features/products/components/ProductInfoRows";
 import {
   getShortDescription,
@@ -320,14 +319,6 @@ async function ProductDetailPage({ params }: Props) {
               )}
             </Suspense>
           </section>
-
-          <ProductMobileStickyBuyBar
-            productId={id}
-            stock={stock}
-            sizeConfig={sizeConfig}
-            pricingProduct={displayPricing}
-            hasConfiguredSizes={hasConfiguredSizes}
-          />
 
           <section className="space-y-6 pb-[calc(var(--mobile-nav-height)+5rem)] md:pb-0">
             {showFullDescription && description?.trim() ? (
