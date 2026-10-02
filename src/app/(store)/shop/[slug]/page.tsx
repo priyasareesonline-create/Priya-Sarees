@@ -43,6 +43,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductInfoRows } from "@/features/products/components/ProductInfoRows";
 import { SafeCheckoutBadges } from "@/features/products/components/SafeCheckoutBadges";
+import { ProductMobileBuyBar } from "@/features/products/components/ProductMobileBuyBar";
 import {
   getShortDescription,
   hasMoreThanShortDescription,
@@ -251,9 +252,10 @@ async function ProductDetailPage({ params }: Props) {
                 <>
                   <ProductPriceDisplay
                     product={pricingProduct}
+                    layout="inline"
                     className="mb-3"
-                    saleClassName="text-2xl"
-                    originalClassName="text-base"
+                    saleClassName="text-lg sm:text-2xl"
+                    originalClassName="text-xs sm:text-base"
                   />
                   {packLabel ? (
                     <p className="mb-3 text-sm font-medium text-foreground/80">
@@ -311,7 +313,7 @@ async function ProductDetailPage({ params }: Props) {
                   packLabel={packLabel}
                 />
               ) : (
-                <div className="flex items-end space-x-5">
+                <div className="hidden items-end space-x-5 md:flex">
                   <AddProductToCartForm
                     productId={id}
                     stock={stock}
@@ -322,6 +324,13 @@ async function ProductDetailPage({ params }: Props) {
               )}
             </Suspense>
           </section>
+
+          <ProductMobileBuyBar
+            productId={id}
+            stock={stock}
+            sizeConfig={sizeConfig}
+            hasConfiguredSizes={hasConfiguredSizes}
+          />
 
           <section className="space-y-6 pb-[calc(var(--mobile-nav-height)+5rem)] md:pb-0">
             {showFullDescription && description?.trim() ? (

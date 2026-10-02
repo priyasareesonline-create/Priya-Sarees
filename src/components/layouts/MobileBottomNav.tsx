@@ -48,6 +48,8 @@ export function MobileBottomNav() {
   const accountHref = user ? "/orders" : "/sign-in";
 
   if (hideStoreChrome) return null;
+  // Product pages show ProductMobileBuyBar in this slot instead.
+  if (pathname.startsWith("/shop/")) return null;
 
   const itemClass = (active: boolean) =>
     cn(

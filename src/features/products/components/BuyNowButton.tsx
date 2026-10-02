@@ -20,9 +20,15 @@ type BuyNowButtonProps = {
   productId: string;
   quantity?: number;
   stock?: number | null;
+  className?: string;
 };
 
-function BuyNowButton({ productId, quantity = 1, stock }: BuyNowButtonProps) {
+function BuyNowButton({
+  productId,
+  quantity = 1,
+  stock,
+  className,
+}: BuyNowButtonProps) {
   const { user } = useAuth();
   const stockControl = useStockControlConfig();
   const { toast } = useToast();
@@ -86,6 +92,7 @@ function BuyNowButton({ productId, quantity = 1, stock }: BuyNowButtonProps) {
 
       <Button
         type="button"
+        className={className}
         disabled={busy || isOutOfStock}
         onClick={() => {
           if (isLocked) return;

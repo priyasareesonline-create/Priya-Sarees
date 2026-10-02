@@ -62,9 +62,10 @@ export function ProductBuyBox({
       <div>
         <ProductPriceDisplay
           product={displayPricing}
+          layout="inline"
           className="mb-1"
-          saleClassName="text-2xl"
-          originalClassName="text-base"
+          saleClassName="text-lg sm:text-2xl"
+          originalClassName="text-xs sm:text-base"
         />
         {priceHint ? (
           <p className="text-xs text-muted-foreground">{priceHint}</p>
