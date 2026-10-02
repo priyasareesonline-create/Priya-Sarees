@@ -44,6 +44,7 @@ import { notFound } from "next/navigation";
 import { ProductInfoRows } from "@/features/products/components/ProductInfoRows";
 import { SafeCheckoutBadges } from "@/features/products/components/SafeCheckoutBadges";
 import { ProductMobileBuyBar } from "@/features/products/components/ProductMobileBuyBar";
+import { PdpQuantityStepper } from "@/features/products/components/PdpQuantityStepper";
 import {
   getShortDescription,
   hasMoreThanShortDescription,
@@ -250,13 +251,17 @@ async function ProductDetailPage({ params }: Props) {
               ) : null}
               {!hasConfiguredSizes ? (
                 <>
-                  <ProductPriceDisplay
-                    product={pricingProduct}
-                    layout="inline"
-                    className="mb-3"
-                    saleClassName="text-lg sm:text-2xl"
-                    originalClassName="text-xs sm:text-base"
-                  />
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <ProductPriceDisplay
+                      product={pricingProduct}
+                      layout="inline"
+                      saleClassName="text-lg sm:text-2xl"
+                      originalClassName="text-xs sm:text-base"
+                    />
+                    {!isOutOfStock ? (
+                      <PdpQuantityStepper productId={id} stock={stock} />
+                    ) : null}
+                  </div>
                   {packLabel ? (
                     <p className="mb-3 text-sm font-medium text-foreground/80">
                       {packLabel}

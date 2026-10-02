@@ -12,6 +12,7 @@ import { useCheckoutChrome } from "@/providers/CheckoutChromeProvider";
 import { useStockControlConfig } from "@/providers/StockControlProvider";
 import useCartActions from "@/features/carts/hooks/useCartActions";
 import { productSizeConfigToCartConfig } from "@/features/carts/cart-options-guard";
+import { usePdpQuantity } from "@/features/products/pdp-quantity-store";
 
 export const BUY_BOX_ID = "product-buy-box";
 
@@ -38,6 +39,7 @@ export function ProductMobileBuyBar({
   const stockControl = useStockControlConfig();
   const { addProductToCart } = useCartActions(user, productId, stock ?? null);
   const [adding, setAdding] = useState(false);
+  const quantity = usePdpQuantity(productId);
 
   const hasSizeOptions = getActiveOptionGroups(sizeConfig).length > 0;
   const needsOptions = hasConfiguredSizes || hasSizeOptions;
@@ -64,7 +66,7 @@ export function ProductMobileBuyBar({
     if (isOutOfStock || adding) return;
     setAdding(true);
     try {
-      await addProductToCart(1, {
+      await addProductToCart(quantity, {
         sizeConfigHint: sizeConfig
           ? productSizeConfigToCartConfig(sizeConfig)
           : undefined,
@@ -118,6 +120,7 @@ export function ProductMobileBuyBar({
             </Button>
             <BuyNowButton
               productId={productId}
+              quantity={quantity}
               stock={stock}
               className={buttonClass}
             />

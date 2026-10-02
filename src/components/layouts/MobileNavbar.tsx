@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import {
   AdminMobileBrand,
   AdminMobileNav,
@@ -7,8 +6,7 @@ import Branding from "./Branding";
 import { MobileSearchTrigger } from "./MobileSearchOverlay";
 import { SideMenu } from "./SideMenu";
 import type { MenuCollection } from "@/lib/storefront/menu-collections";
-import Link from "next/link";
-import { Icons } from "./icons";
+import { MobileHeaderCartLink } from "@/features/carts/components/MobileHeaderCartLink";
 
 type Props = {
   adminLayout: boolean;
@@ -51,15 +49,7 @@ function MobileNavbar({ adminLayout, collections = [] }: Props) {
         {!adminLayout ? (
           <>
             <MobileSearchTrigger className="h-11 w-11 shrink-0 touch-manipulation" />
-            <Link
-              href="/cart"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-muted touch-manipulation"
-              aria-label="Cart"
-            >
-              <Suspense fallback={null}>
-                <Icons.cart className="h-5 w-5" />
-              </Suspense>
-            </Link>
+            <MobileHeaderCartLink />
           </>
         ) : (
           <span className="inline-flex h-11 w-11 shrink-0" aria-hidden />
